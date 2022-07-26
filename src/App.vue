@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" height="200" src="./assets/weather.png">
     <WeatherNow msg=""/>
   </div>
 </template>
