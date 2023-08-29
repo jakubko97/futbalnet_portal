@@ -1,27 +1,21 @@
 <template>
-  <div id="app">
-    <WeatherNow msg=""/>
-  </div>
+  <v-app id="ds_montecarlo">
+    <AppContent />
+  </v-app>
 </template>
 
 <script>
-import WeatherNow from './components/WeatherNow.vue'
+import AppContent from './components/app/Content.vue';
 
 export default {
   name: 'App',
-  components: {
-    WeatherNow
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 20px;
-}
-</style>
+  components: {
+    AppContent
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
