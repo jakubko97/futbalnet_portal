@@ -71,7 +71,7 @@ export default {
       videos: [],
       matches: [],
       leagues: [{
-        name: 'VI. Vihorlatsko - dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches?limit=12&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches?limit=12&offset=0&withDate=true&withTeams=true&closed=true'
       },
       {
         name: 'V. Liga Sever', api: 'public/VsFZ/competitions/6493200c7f8d0dc99466fb7a/parts/6493200c76d0d348cd099948/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
