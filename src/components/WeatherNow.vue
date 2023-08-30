@@ -1,30 +1,33 @@
 <template>
   <div>
-    <img alt="Current weather icon" height="200" :src="icon ? icon : ''">
     <h2>{{ location }}</h2>
+    <img alt="Current weather icon" :src="icon ? icon : ''" />
     <p>Čas merania {{ formattedDate }}</p>
-    <p>
-      Teplota
-      <v-progress-circular
-        :value="temp ? temp : ''"
-        :size="100"
-        :width="12"
-        color="red"
-      >
-        {{ temp }} °C
-      </v-progress-circular>
-    </p>
-    <p>
-      Vlhkosť
-      <v-progress-circular
-        :value="humidity ? humidity : ''"
-        :size="100"
-        :width="12"
-        color="red"
-      >
-        {{ humidity }} %
-      </v-progress-circular>
-    </p>
+    {{ temp + '℃ ' + humidity + '%'}}
+    <v-row>
+      <v-col>
+        <vue-thermometer
+          style="justify-content: end"
+          :value="temp"
+          :min="-20"
+          :max="25"
+        />
+      </v-col>
+      <v-col>
+        <vue-thermometer
+          :value="humidity"
+          :min="0"
+          scale="%"
+          :max="100"
+          :options="{
+            thermo: {
+              color: '#0000FF',
+            },
+          }"
+        />
+      </v-col>
+    </v-row>
+
     <div class="text-center">
       <v-btn
         rounded
@@ -51,13 +54,13 @@ export default {
   data() {
     return {
       date: "",
-      temp: "",
-      humidity: "",
+      temp: null,
+      humidity: null,
       location: "",
       currentLocale: "sk",
       loading: false,
       error: "",
-      icon: ""
+      icon: "",
     };
   },
   created() {
@@ -95,7 +98,7 @@ export default {
       //     const searchParams = new URLSearchParams(paramsObj);
 
       return await fetch(
-        "http://192.168.1.106:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
+        "http://192.168.1.122:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
         {
           method: "GET",
           headers: {

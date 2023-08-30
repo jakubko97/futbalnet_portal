@@ -15,6 +15,11 @@ npm run serve
 npm run build
 ```
 
+```
+scp -r dist/* pi@192.168.1.122:../../var/www/html
+```
+
+
 ### Lints and fixes files
 ```
 npm run lint
