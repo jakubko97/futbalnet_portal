@@ -4,7 +4,11 @@ import vuetify from '@/plugins/vuetify' // path to vuetify export
 
 Vue.config.productionTip = false
 
+import '@/plugins/axios.js'
+import router from './router'
+
 new Vue({
   vuetify,
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')
