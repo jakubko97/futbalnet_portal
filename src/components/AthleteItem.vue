@@ -76,7 +76,9 @@ export default {
         getEventByUserId(id) {
             let arr = []
             Array.from(this.events, e => {
-                e.eventTime = e.eventTime.substring(0, 2) + '´'
+                if(e.eventTime){
+                    e.eventTime = e.eventTime.substring(0, 2) + '´'
+                }
                 if(e.type == 'goal_game'){
                     e.type_sk = 'Gól z hry'
                 }else if(e.type == 'goal_penalty'){
@@ -86,7 +88,7 @@ export default {
                 }else if(e.type == 'goal_standard'){
                     e.type_sk = 'Štandartka'
                 }
-                if (e.player == null && e.crewMember._id == id) {
+                if (e.player == null && e.crewMember && e.crewMember._id == id) {
                     arr.push(e)
                 }
                 if (e.player && e.player._id == id) {

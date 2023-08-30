@@ -30,23 +30,25 @@
                   </v-row>
                   <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
                     <v-list-item-content>
-                      <v-col style="text-align: right;" lg="5" xs="3">
-                        {{ match.teams[0].name }}
+                      <v-col class="d-flex justify-end" style="justify-content: right: ;" lg="5" xs="3">
+                        <div :style="match.score[0] > match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">{{ match.teams[0].name }}</div>
                         <v-list-item-avatar>
                           <img max-height="40" max-width="40" @error="imgError" alt="domaci"
                             :src="match.teams[0].organization.logo_public_url">
                         </v-list-item-avatar>
                       </v-col>
-                      <v-col style="text-align: center;" lg="1" xs="2">
+                      <v-col class="d-flex justify-center" lg="1" xs="2">
                         {{ match.score[0] }} - {{ match.score[1] }}
-
+                        <div style="font-weight: bold;" v-if="match.penaltiesScore">
+                          pk {{ match.penaltiesScore[0] + ':' + match.penaltiesScore[1] }}
+                        </div>
                       </v-col>
-                      <v-col style="text-align: left;" lg="5" xs="3">
+                      <v-col class="d-inline-flex justify-start" lg="5" xs="3">
                         <v-list-item-avatar>
                           <img max-height="40" max-width="40" @error="imgError" alt="hostia"
                             :src="match.teams[1].organization.logo_public_url">
                         </v-list-item-avatar>
-                        {{ match.teams[1].name }}
+                        <div :style="match.score[0] < match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">{{ match.teams[1].name }}</div>
                       </v-col>
                     </v-list-item-content>
                   </v-list-item>
