@@ -1,15 +1,29 @@
 <template>
   <div>
-    <v-tabs v-model="tab">
-      <v-tab
-        @click="fetchData(league)"
-        v-for="league in leagues"
-        :key="league.name"
-      >
-        {{ league.name }}
-      </v-tab>
-    </v-tabs>
     <v-container class="ma-0 pa-2" fluid>
+      <v-row v-if="$vuetify.breakpoint.name == 'xs'">
+        <v-col cols="12">
+          <v-combobox
+            v-model="selectedLeague"
+            :items="leagues"
+            label="League"
+            item-text="name"
+            outlined
+            @change="selectChange"
+            dense
+          ></v-combobox>
+        </v-col>
+      </v-row>
+      <v-tabs v-else v-model="tab">
+        <v-tab
+          @click="fetchData(league)"
+          v-for="league in leagues"
+          :key="league.name"
+        >
+          {{ league.name }}
+        </v-tab>
+      </v-tabs>
+
       <v-tabs-items @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
           <v-list v-if="matches != null" dense>
@@ -161,9 +175,12 @@ export default {
           api: "public/futbalsfz.sk/competitions/64784fa27b634444d1943186/parts/64784fa276d0d348cd095bda/matches?limit=16&offset=0&withDate=true&closed=true",
         },
       ],
+      selectedLeague: null,
     };
   },
   created() {
+    this.selectedLeague = this.leagues[0];
+
     this.fetchData(this.leagues[0]);
   },
   computed: {},
@@ -175,6 +192,9 @@ export default {
       return (
         videos.filter((v) => v.competitionMatchId === match._id).length > 0
       );
+    },
+    selectChange(league) {
+      this.fetchData(league);
     },
     getAverageAge(athletes) {
       let sum = 0;
