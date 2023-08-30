@@ -35,12 +35,12 @@
                     <v-col>
                       {{ match.round.name }}. Kolo
                       {{ $utils.formatDate(match.startDate) }}
-                      <template v-for="vid in videos">
-                        <!-- <div v-for="v in vid.videos" :key="v._id">
+                      <!-- <template v-for="vid in videos">
+                        <div v-for="v in vid.videos" :key="v._id">
                       <template v-if="v.competitionMatchId == match._id">
                         {{ v.category }}
                       </template>
-                    </div> -->
+                    </div>
                         <v-img
                           style="float: right"
                           alt=""
@@ -50,7 +50,7 @@
                           :key="vid._id"
                           :src="require('../assets/video_thumbnail.png')"
                         />
-                      </template>
+                      </template> -->
                     </v-col>
                   </v-row>
                   <v-list-item
