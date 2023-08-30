@@ -22,33 +22,38 @@
                         {{ v.category }}
                       </template>
                     </div> -->
-                        <v-img style="float: right;" alt="" max-height="20" max-width="20" v-if="isVideoAvailable(vid.videos, match)"
-                          :key="vid._id" :src="require('../assets/video_thumbnail.png')" />
+                        <v-img style="float: right;" alt="" max-height="20" max-width="20"
+                          v-if="isVideoAvailable(vid.videos, match)" :key="vid._id"
+                          :src="require('../assets/video_thumbnail.png')" />
                       </template>
 
                     </v-col>
                   </v-row>
                   <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
                     <v-list-item-content>
-                      <v-col class="d-flex justify-end" style="justify-content: right: ;" lg="5" xs="3">
-                        <div :style="match.score[0] > match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">{{ match.teams[0].name }}</div>
+                      <v-col class="d-md-flex justify-end flex-xs-1-0" style="justify-content: right: ;" lg="5" xs="3">
+                        <div
+                          :style="match.score[0] > match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">
+                          {{ match.teams[0].name }}</div>
                         <v-list-item-avatar>
                           <img max-height="40" max-width="40" @error="imgError" alt="domaci"
                             :src="match.teams[0].organization.logo_public_url">
                         </v-list-item-avatar>
                       </v-col>
-                      <v-col class="d-flex justify-center" lg="1" xs="2">
+                      <v-col class="d-md-flex justify-center flex-xs-1-0" lg="1" xs="2">
                         {{ match.score[0] }} - {{ match.score[1] }}
                         <div style="font-weight: bold;" v-if="match.penaltiesScore">
                           pk {{ match.penaltiesScore[0] + ':' + match.penaltiesScore[1] }}
                         </div>
                       </v-col>
-                      <v-col class="d-inline-flex justify-start" lg="5" xs="3">
+                      <v-col class="d-md-flex justify-start flex-xs-3" lg="5" xs="3">
                         <v-list-item-avatar>
                           <img max-height="40" max-width="40" @error="imgError" alt="hostia"
                             :src="match.teams[1].organization.logo_public_url">
                         </v-list-item-avatar>
-                        <div :style="match.score[0] < match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">{{ match.teams[1].name }}</div>
+                        <div
+                          :style="match.score[0] < match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">
+                          {{ match.teams[1].name }}</div>
                       </v-col>
                     </v-list-item-content>
                   </v-list-item>
@@ -122,7 +127,7 @@ export default {
     routeTo(match) {
       this.$router.push('/match/' + match.__issfId);
     },
-    imgError(event){
+    imgError(event) {
       event.target.src = require('../assets/default_club_logo.png')
     },
     fetchVideo() {
