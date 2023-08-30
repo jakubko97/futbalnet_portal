@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-tabs v-model="tab">
-      <v-tab @click="fetchData(league)" v-for="league in leagues" :key="league.name">
+      <v-tab  @click="fetchData(league)" v-for="league in leagues" :key="league.name">
         {{ league.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
+    <v-tabs-items @change="tabChange()" v-model="tab">
       <v-tab-item v-for="league in leagues" :key="league.name">
         <v-list v-if="matches != null" dense>
           <v-subheader>Vysledky</v-subheader>
@@ -93,6 +93,9 @@ export default {
   computed: {
   },
   methods: {
+    tabChange(){
+      this.fetchData(this.leagues[this.tab])
+    },
     isVideoAvailable(videos, match) {
       return videos.filter(v => v.competitionMatchId === match._id).length > 0
     },
