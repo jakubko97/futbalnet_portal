@@ -1,6 +1,6 @@
 <template>
   <div>
-     <AdsHeader/>
+     <!-- <AdsHeader/> -->
      <FutbalnetWrapper />
      <AdsFooter/>
   </div>
@@ -9,14 +9,14 @@
 <script>
 // @ is an alias to /src
 import FutbalnetWrapper from '../components/FutbalnetWrapper.vue'
-import AdsHeader from '../components/AdvertisementWrapper.vue'
+// import AdsHeader from '../components/AdvertisementWrapper.vue'
 import AdsFooter from '../components/AdsFooter.vue'
 
 export default {
   name: 'HomeView',
   components: {
     FutbalnetWrapper,
-    AdsHeader,
+    // AdsHeader,
     AdsFooter
   }
 }
