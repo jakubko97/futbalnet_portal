@@ -40,7 +40,7 @@
                             :src="match.teams[0].organization.logo_public_url">
                         </v-list-item-avatar>
                       </v-col>
-                      <v-col class="d-md-flex justify-center flex-xs-1-0" lg="1" xs="2">
+                      <v-col class="d-flex justify-center" lg="1" xs="2">
                         {{ match.score[0] }} - {{ match.score[1] }}
                         <div style="font-weight: bold;" v-if="match.penaltiesScore">
                           pk {{ match.penaltiesScore[0] + ':' + match.penaltiesScore[1] }}
