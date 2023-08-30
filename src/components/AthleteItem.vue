@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-list-item v-for="(ath, idx) in athletes" :key="ath.sportnetUser._id"
+        <v-list-item v-for="(ath, idx) in athletes" :key="crew ? (ath.position + ath.sportnetUser._id) : ath.sportnetUser._id"
             :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''">
             <v-list-item-icon v-if="ath.additionalData">
                 {{ ath.additionalData.nr }}
