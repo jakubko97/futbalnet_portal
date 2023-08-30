@@ -1,7 +1,7 @@
 <template>
   <v-container style="text-align: center;" fluid>
     <img height="100" :src="require('../assets/ECG-Logo.svg')">
-    <img width="450" :src="require('../assets/termoobchod_logo.png')">
+    <img :width="$vuetify.breakpoint.name == 'xs' ? '350' : '450'" :src="require('../assets/termoobchod_logo.png')">
     <img height="50" :src="require('../assets/namenu.jpg')">
   </v-container>
   </template>
