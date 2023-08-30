@@ -2,8 +2,8 @@
     <v-container v-if="results" fluid>
         <v-tabs v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
             <v-tab v-for="i in [0, 1]" :key="i">
-                <v-img class="mr-2" max-height="28" max-width="28"
-                    :src="results.teams[i].organization.logo_public_url"></v-img>
+                <v-img class="mr-2" max-height="28" max-width="28" :src="results.teams[i].organization.logo_public_url"
+                    />
                 {{ results.teams[i].name }}
             </v-tab>
         </v-tabs>
@@ -13,8 +13,8 @@
                     <div v-if="index == 0">
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url"></v-img>
+                                <img max-height="40" max-width="40" :src="results.teams[index].organization.logo_public_url"
+                                    @error="imgError">
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 {{ results.teams[index].name }}
@@ -26,8 +26,8 @@
                     <div v-else>
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url"></v-img>
+                                <img max-height="40" max-width="40"
+                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 {{ results.teams[index].name }}
@@ -69,8 +69,8 @@
                     <div v-if="index == 0">
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url"></v-img>
+                                <img max-height="40" max-width="40"
+                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 {{ results.teams[index].name }}
@@ -82,8 +82,8 @@
                     <div v-else>
                         <v-list-item>
                             <v-list-item-avatar>
-                                <v-img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url"></v-img>
+                                <img max-height="40" max-width="40"
+                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 {{ results.teams[index].name }}
@@ -135,6 +135,9 @@ export default {
     computed: {
     },
     methods: {
+        imgError(event) {
+            event.target.src = require('../assets/default_club_logo.png')
+        },
         //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
         fetchData() {
             this.$apiV1

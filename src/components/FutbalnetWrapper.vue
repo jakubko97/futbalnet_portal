@@ -1,59 +1,62 @@
 <template>
   <div>
     <v-tabs v-model="tab">
-      <v-tab  @click="fetchData(league)" v-for="league in leagues" :key="league.name">
+      <v-tab @click="fetchData(league)" v-for="league in leagues" :key="league.name">
         {{ league.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items @change="tabChange()" v-model="tab">
-      <v-tab-item v-for="league in leagues" :key="league.name">
-        <v-list v-if="matches != null" dense>
-          <v-subheader>Vysledky</v-subheader>
-          <v-list-item-group color="primary">
-            <template v-for="(match, idx) in matches">
-              <div :key="match._id">
-                <v-row>
-                  <v-col>
-                    {{ match.competition.name }} {{ match.round.name }}. Kolo
-                    <template v-for="vid in videos">
-                      <!-- <div v-for="v in vid.videos" :key="v._id">
+    <v-container class="ma-0 pa-2" fluid>
+      <v-tabs-items @change="tabChange()" v-model="tab">
+        <v-tab-item v-for="league in leagues" :key="league.name">
+          <v-list v-if="matches != null" dense>
+            <!-- <v-subheader>Vysledky</v-subheader> -->
+            <v-list-item-group color="primary">
+              <template v-for="(match, idx) in matches">
+                <div :key="match._id">
+                  <v-row>
+                    <v-col>
+                      {{ match.competition.name }} {{ match.round.name }}. Kolo
+                      <template v-for="vid in videos">
+                        <!-- <div v-for="v in vid.videos" :key="v._id">
                       <template v-if="v.competitionMatchId == match._id">
                         {{ v.category }}
                       </template>
                     </div> -->
-                      <v-img alt="" max-height="20" max-width="20" v-if="isVideoAvailable(vid.videos, match)"
-                        :key="vid._id" :src="require('../assets/video_thumbnail.png')" />
-                    </template>
-
-                  </v-col>
-                </v-row>
-                <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
-                  <v-list-item-content>
-                    <v-col style="text-align: right;" lg="5" xs="3">
-                      {{ match.teams[0].name }}
-                      <v-list-item-avatar>
-                        <v-img max-height="40" max-width="40" :src="match.teams[0].organization.logo_public_url"></v-img>
-                      </v-list-item-avatar>
-                    </v-col>
-                    <v-col style="text-align: center;" lg="1" xs="2">
-                      {{ match.score[0] }} - {{ match.score[1] }}
+                        <v-img style="float: right;" alt="" max-height="20" max-width="20" v-if="isVideoAvailable(vid.videos, match)"
+                          :key="vid._id" :src="require('../assets/video_thumbnail.png')" />
+                      </template>
 
                     </v-col>
-                    <v-col style="text-align: left;" lg="5" xs="3">
-                      <v-list-item-avatar>
-                        <v-img max-height="40" max-width="40" :src="match.teams[1].organization.logo_public_url"></v-img>
-                      </v-list-item-avatar>
-                      {{ match.teams[1].name }}
-                    </v-col>
-                  </v-list-item-content>
-                </v-list-item>
-              </div>
-            </template>
-          </v-list-item-group>
-        </v-list>
-      </v-tab-item>
-    </v-tabs-items>
+                  </v-row>
+                  <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
+                    <v-list-item-content>
+                      <v-col style="text-align: right;" lg="5" xs="3">
+                        {{ match.teams[0].name }}
+                        <v-list-item-avatar>
+                          <img max-height="40" max-width="40" @error="imgError" alt="domaci"
+                            :src="match.teams[0].organization.logo_public_url">
+                        </v-list-item-avatar>
+                      </v-col>
+                      <v-col style="text-align: center;" lg="1" xs="2">
+                        {{ match.score[0] }} - {{ match.score[1] }}
 
+                      </v-col>
+                      <v-col style="text-align: left;" lg="5" xs="3">
+                        <v-list-item-avatar>
+                          <img max-height="40" max-width="40" @error="imgError" alt="hostia"
+                            :src="match.teams[1].organization.logo_public_url">
+                        </v-list-item-avatar>
+                        {{ match.teams[1].name }}
+                      </v-col>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-container>
     <!-- <DetailDialog ref="detailMatchDialog" v-if="selectedMatch != null" :match-id="selectedMatch.__issfId" /> -->
   </div>
 </template>
@@ -83,6 +86,12 @@ export default {
         name: 'III. Východ', api: 'public/futbalsfz.sk/competitions/6477ac257b634444d118634a/parts/647a3f3b76d0d348cd095fa9/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
       },
       {
+        name: 'Niké Liga', api: 'public/ulk.futbalnet.sk/competitions/64997173eebe726b04698003/parts/649abbbb76d0d348cd09aa12/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+      },
+      {
+        name: 'VII. VT', api: 'public/obfz-vranov-nad-toplou.futbalnet.sk/competitions/648189467b634444d1a6df81/parts/6490289976d0d348cd0990ec/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+      },
+      {
         name: 'Slovnaft Cup', api: 'public/futbalsfz.sk/competitions/64784fa27b634444d1943186/parts/64784fa276d0d348cd095bda/matches?limit=16&offset=0&withDate=true&closed=true'
       }]
     };
@@ -93,7 +102,7 @@ export default {
   computed: {
   },
   methods: {
-    tabChange(){
+    tabChange() {
       this.fetchData(this.leagues[this.tab])
     },
     isVideoAvailable(videos, match) {
@@ -110,6 +119,9 @@ export default {
     },
     routeTo(match) {
       this.$router.push('/match/' + match.__issfId);
+    },
+    imgError(event){
+      event.target.src = require('../assets/default_club_logo.png')
     },
     fetchVideo() {
       Array.from(this.matches, c => {
