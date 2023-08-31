@@ -5,6 +5,11 @@
         {{ league.name }}
       </v-tab>
     </v-tabs>
+    <v-chip-group mandatory @change="tagChange" active-class="primary--text" column>
+      <v-chip v-for="tag in tags" :key="tag.name">
+        {{ tag.name }}
+      </v-chip>
+    </v-chip-group>
     <v-container class="ma-0 pa-2" fluid>
       <v-tabs-items @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
@@ -76,39 +81,46 @@ export default {
   data() {
     return {
       tab: 0,
+      selectedTag: null,
       results: null,
       selectedMatch: null,
       videos: [],
       matches: [],
+      tags: [{ name: 'Program', closed: false }, { name: 'Vysledky', closed: true }],
       leagues: [{
-        name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches?limit=12&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches'
       },
       {
-        name: 'V. Liga Sever', api: 'public/VsFZ/competitions/6493200c7f8d0dc99466fb7a/parts/6493200c76d0d348cd099948/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'V. Liga Sever', api: 'public/VsFZ/competitions/6493200c7f8d0dc99466fb7a/parts/6493200c76d0d348cd099948/matches'
       },
       {
-        name: 'IV. Liga', api: 'public/VsFZ/competitions/647ba0837b634444d1c5174e/parts/6486d42f76d0d348cd097868/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'IV. Liga', api: 'public/VsFZ/competitions/647ba0837b634444d1c5174e/parts/6486d42f76d0d348cd097868/matches'
       },
       {
-        name: 'III. Východ', api: 'public/futbalsfz.sk/competitions/6477ac257b634444d118634a/parts/647a3f3b76d0d348cd095fa9/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'III. Východ', api: 'public/futbalsfz.sk/competitions/6477ac257b634444d118634a/parts/647a3f3b76d0d348cd095fa9/matches'
       },
       {
-        name: 'Niké Liga', api: 'public/ulk.futbalnet.sk/competitions/64997173eebe726b04698003/parts/649abbbb76d0d348cd09aa12/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'Niké Liga', api: 'public/ulk.futbalnet.sk/competitions/64997173eebe726b04698003/parts/649abbbb76d0d348cd09aa12/matches'
       },
       {
-        name: 'VII. VT', api: 'public/obfz-vranov-nad-toplou.futbalnet.sk/competitions/648189467b634444d1a6df81/parts/6490289976d0d348cd0990ec/matches?limit=16&offset=0&withDate=true&withTeams=true&closed=true'
+        name: 'VII. VT', api: 'public/obfz-vranov-nad-toplou.futbalnet.sk/competitions/648189467b634444d1a6df81/parts/6490289976d0d348cd0990ec/matches'
       },
       {
-        name: 'Slovnaft Cup', api: 'public/futbalsfz.sk/competitions/64784fa27b634444d1943186/parts/64784fa276d0d348cd095bda/matches?limit=16&offset=0&withDate=true&closed=true'
+        name: 'Slovnaft Cup', api: 'public/futbalsfz.sk/competitions/64784fa27b634444d1943186/parts/64784fa276d0d348cd095bda/matches'
       }]
     };
   },
   created() {
+    this.selectedTag = this.tags[0]
     this.fetchData(this.leagues[0]);
   },
   computed: {
   },
   methods: {
+    tagChange(index) {
+      this.selectedTag = this.tags[index]
+      this.fetchData(this.leagues[this.tab])
+    },
     tabChange() {
       this.fetchData(this.leagues[this.tab])
     },
@@ -149,8 +161,18 @@ export default {
     //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
     fetchData(league) {
       this.videos = []
+      this.matches = []
+      console.log(this.selectedTag)
+      const params = {
+        limit: 12,
+        offset: 0,
+        withDate: true,
+        withTeams: true,
+        closed: this.selectedTag.closed
+      }
+      console.log(params)
       this.$apiV1
-        .get(league.api)
+        .get(league.api, { params: params })
         .then((response) => {
           this.matches = response.data.matches
         })
@@ -158,7 +180,7 @@ export default {
           // this.errors.push(e);
         })
         .finally(() => {
-          this.fetchVideo()
+          //this.fetchVideo()
         });
     },
   }
