@@ -6,6 +6,11 @@
         <template #[`item.logo`]="{ item }">
             <v-img max-height="20" max-width="20" :src="item.logo" />
         </template>
+        <template #[`item.club_name`]="{ item }">
+            <div :class="favTeams.includes(item.club_name) ? 'font-weight-bold' : ''">
+                {{ item.club_name }}
+            </div>
+        </template>
     </v-data-table>
 </template>
     
@@ -104,6 +109,7 @@ export default {
     },
     data: () => ({
         teams: [],
+        favTeams: ['FK Vechec', 'MFK Vranov nad Topľou'],
         headers: [
             { text: '#', value: 'position' },
             { text: '', value: 'logo', sortable: false },
