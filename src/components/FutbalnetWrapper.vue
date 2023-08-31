@@ -24,7 +24,7 @@
           ></v-combobox>
         </v-col>
       </v-row>
-      <v-tabs v-else v-model="tab">
+      <!-- <v-tabs v-else v-model="tab">
         <v-tab
           @click="fetchData(league)"
           v-for="league in leagues"
@@ -32,7 +32,7 @@
         >
           {{ league.name }}
         </v-tab>
-      </v-tabs>
+      </v-tabs> -->
 
       <v-tabs-items @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
