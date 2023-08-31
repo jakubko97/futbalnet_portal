@@ -1,19 +1,22 @@
 <template>
   <div>
     <v-container class="ma-0 pa-2" fluid>
-      <v-tabs v-model="tab">
+      <!-- PRE DESKTOPOVU VERZIU, TABS LEAGUE NAMES -->
+      <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
         <v-tab @click="fetchData(league)" v-for="league in leagues" :key="league.name">
           {{ league.name }}
         </v-tab>
       </v-tabs>
-      <v-row v-if="$vuetify.breakpoint.name == 'xs'">
+      <!-- PRE MOBILNU VERZIU, COMBOBOX LEAGUE LIST -->
+      <v-row v-else>
         <v-col cols="12">
-          <v-combobox v-model="selectedLeague" :items="leagues" label="League" item-text="name" outlined
+          <v-combobox hide-details v-model="selectedLeague" :items="leagues" label="League" item-text="name" outlined
             @change="selectChange" dense></v-combobox>
         </v-col>
       </v-row>
-      <v-row v-else>
-        <v-col>
+      <!-- TAGS PRE DETAILNY VYBER KONTENTU (Program, vysledky, tabulka...) -->
+      <v-row>
+        <v-col cols="12">
           <v-chip-group mandatory @change="tagChange" active-class="primary--text" column>
             <v-chip v-for="tag in tags" :key="tag.name">
               {{ tag.name }}
@@ -21,16 +24,6 @@
           </v-chip-group>
         </v-col>
       </v-row>
-      <!-- <v-tabs v-else v-model="tab">
-        <v-tab
-          @click="fetchData(league)"
-          v-for="league in leagues"
-          :key="league.name"
-        >
-          {{ league.name }}
-        </v-tab>
-      </v-tabs> -->
-
       <v-tabs-items @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
           <v-list v-if="matches != null" dense>
@@ -120,6 +113,7 @@ export default {
       results: null,
       selectedMatch: null,
       videos: [],
+      selectedLeague: null,
       matches: [],
       tags: [{ name: 'Program', closed: false }, { name: 'Vysledky', closed: true }],
       leagues: [{
@@ -147,6 +141,7 @@ export default {
   },
   created() {
     this.selectedTag = this.tags[0]
+    this.selectedLeague = this.leagues[0]
     this.fetchData(this.leagues[0]);
   },
   computed: {},
@@ -204,7 +199,6 @@ export default {
     fetchData(league) {
       this.videos = []
       this.matches = []
-      console.log(this.selectedTag)
       const params = {
         limit: 12,
         offset: 0,
@@ -212,7 +206,6 @@ export default {
         withTeams: true,
         closed: this.selectedTag.closed
       }
-      console.log(params)
       this.$apiV1
         .get(league.api, { params: params })
         .then((response) => {

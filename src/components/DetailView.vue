@@ -1,7 +1,7 @@
 <template>
     <v-container v-if="results" fluid>
         <!-- TABS PRE MOBILNU VERZIU -->
-        <v-tabs v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
+        <v-tabs hide-slider v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
             <v-tab v-for="i in results.teams" :key="i._id">
                 <v-img class="mr-2" max-height="28" max-width="28" :src="i.organization.logo_public_url" />
                 {{ i.name }}
@@ -36,7 +36,7 @@
             </v-col>
         </v-row>
         <!-- PRE DESKTOPOVU VERZIU, TEAMS CONTENT, ZOSTAVY -->
-        <v-row v-if="$vuetify.breakpoint.name != 'xs'">
+        <v-row v-if="$vuetify.breakpoint.name != 'xs' && results.nominations.length > 0">
             <v-col v-for="(nom) in results.nominations" :key="nom.teamId">
                 <AthleteItem :events="results.protocol.events"
                     :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
@@ -45,6 +45,11 @@
                     :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
                 <v-subheader> Realizačný tím</v-subheader>
                 <AthleteItem crew :events="results.protocol.events" :athletes="nom.crew" />
+            </v-col>
+        </v-row>
+        <v-row class="mt-6" v-else>
+            <v-col class="d-flex justify-center">
+                Zostavy nie su zatiaľ dostupné
             </v-col>
         </v-row>
     </v-container>
