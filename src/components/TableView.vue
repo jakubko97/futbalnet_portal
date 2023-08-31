@@ -1,7 +1,10 @@
 <template>
-    <v-data-table hide-default-footer :headers="headers" :items="teams" :items-per-page="15" class="elevation-1">
+    <v-data-table mobile-breakpoint="0" hide-default-footer :headers="headers" :items="teams" :items-per-page="24" class="elevation-0">
         <template #[`item.score`]="{ item }">
             {{ item.score[0] + ':' + item.score[1] }}
+        </template>
+        <template #[`item.logo`]="{ item }">
+            <v-img max-height="20" max-width="20" :src="item.logo" />
         </template>
     </v-data-table>
 </template>
@@ -37,6 +40,7 @@ export default {
                         const team = {
                             club_id: i._id,
                             club_name: i.name,
+                            logo: i.organization.logo_public_url,
                             position: ++idx,
                             score: [0, 0],
                             points: 0
@@ -101,9 +105,10 @@ export default {
     data: () => ({
         teams: [],
         headers: [
-            { text: '', value: 'position' },
+            { text: '#', value: 'position' },
+            { text: '', value: 'logo', sortable: false },
             { text: 'Klub', value: 'club_name' },
-            { text: 'Skore', value: 'score' },
+            { text: 'Skóre', value: 'score' },
             { text: 'B', value: 'points' }
         ],
     }),
