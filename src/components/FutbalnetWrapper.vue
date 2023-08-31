@@ -152,8 +152,12 @@ export default {
   computed: {},
   methods: {
     tagChange(index) {
+      if(this.$vuetify.breakpoint.name == 'xs'){
+        this.fetchData(this.selectedLeague)
+      }else {
+        this.fetchData(this.leagues[this.tab])
+      }
       this.selectedTag = this.tags[index]
-      this.fetchData(this.leagues[this.tab])
     },
     tabChange() {
       this.fetchData(this.leagues[this.tab]);
