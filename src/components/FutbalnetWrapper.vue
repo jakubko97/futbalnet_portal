@@ -24,7 +24,7 @@
           </v-chip-group>
         </v-col>
       </v-row>
-      <v-tabs-items @change="tabChange()" v-model="tab">
+      <v-tabs-items v-if="!selectedTag.table" @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
           <v-list v-if="matches != null" dense>
             <!-- <v-subheader>Vysledky</v-subheader> -->
@@ -98,14 +98,15 @@
           </v-list>
         </v-tab-item>
       </v-tabs-items>
+      <TableView v-if="selectedTag.table" :table-data="matches" />
     </v-container>
-    <!-- <DetailDialog ref="detailMatchDialog" v-if="selectedMatch != null" :match-id="selectedMatch.__issfId" /> -->
   </div>
 </template>
 <script>
+import TableView from './TableView.vue'
 export default {
   name: "FutbalnetWrapper",
-  components: {},
+  components: {TableView},
   data() {
     return {
       tab: 0,
@@ -115,7 +116,11 @@ export default {
       videos: [],
       selectedLeague: null,
       matches: [],
-      tags: [{ name: 'Program', closed: false }, { name: 'Vysledky', closed: true }],
+      tags: [
+        { name: 'Program', closed: false, limit: 12 },
+       { name: 'Vysledky', closed: true, limit: 12 },
+       { name: 'Tabuľka', closed: true, table: true, limit: null }
+      ],
       leagues: [{
         name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches'
       },
@@ -200,7 +205,7 @@ export default {
       this.videos = []
       this.matches = []
       const params = {
-        limit: 12,
+        limit: this.selectedTag.limit,
         offset: 0,
         withDate: true,
         withTeams: true,
