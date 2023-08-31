@@ -11,6 +11,29 @@
       </v-chip>
     </v-chip-group>
     <v-container class="ma-0 pa-2" fluid>
+      <v-row v-if="$vuetify.breakpoint.name == 'xs'">
+        <v-col cols="12">
+          <v-combobox
+            v-model="selectedLeague"
+            :items="leagues"
+            label="League"
+            item-text="name"
+            outlined
+            @change="selectChange"
+            dense
+          ></v-combobox>
+        </v-col>
+      </v-row>
+      <v-tabs v-else v-model="tab">
+        <v-tab
+          @click="fetchData(league)"
+          v-for="league in leagues"
+          :key="league.name"
+        >
+          {{ league.name }}
+        </v-tab>
+      </v-tabs>
+
       <v-tabs-items @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
           <v-list v-if="matches != null" dense>
@@ -20,45 +43,94 @@
                 <div :key="match._id">
                   <v-row>
                     <v-col>
-                      {{ match.competition.name }} {{ match.round.name }}. Kolo
-                      <template v-for="vid in videos">
-                        <!-- <div v-for="v in vid.videos" :key="v._id">
+                      {{ match.round.name }}. Kolo
+                      {{ $utils.formatDate(match.startDate) }}
+                      <!-- <template v-for="vid in videos">
+                        <div v-for="v in vid.videos" :key="v._id">
                       <template v-if="v.competitionMatchId == match._id">
                         {{ v.category }}
                       </template>
-                    </div> -->
-                        <v-img style="float: right;" alt="" max-height="20" max-width="20"
-                          v-if="isVideoAvailable(vid.videos, match)" :key="vid._id"
-                          :src="require('../assets/video_thumbnail.png')" />
-                      </template>
-
+                    </div>
+                        <v-img
+                          style="float: right"
+                          alt=""
+                          max-height="20"
+                          max-width="20"
+                          v-if="isVideoAvailable(vid.videos, match)"
+                          :key="vid._id"
+                          :src="require('../assets/video_thumbnail.png')"
+                        />
+                      </template> -->
                     </v-col>
                   </v-row>
-                  <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
+                  <v-list-item
+                    @click="routeTo(match)"
+                    :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''"
+                    dense
+                  >
                     <v-list-item-content>
-                      <v-col class="d-md-flex justify-end flex-xs-1-0" style="justify-content: right: ;" lg="5" xs="3">
+                      <v-col
+                        class="d-md-flex justify-end flex-xs-1-0"
+                        style="justify-content: right: ;"
+                        lg="5"
+                        xs="3"
+                      >
                         <div
-                          :style="match.score[0] > match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">
-                          {{ match.teams[0].name }}</div>
+                          :style="
+                            match.score[0] > match.score[1]
+                              ? 'font-weight: bold; align-self: center'
+                              : 'align-self: center'
+                          "
+                        >
+                          {{ match.teams[0].name }}
+                        </div>
                         <v-list-item-avatar>
-                          <img max-height="40" max-width="40" @error="imgError" alt="domaci"
-                            :src="match.teams[0].organization.logo_public_url">
+                          <img
+                            max-height="40"
+                            max-width="40"
+                            @error="imgError"
+                            alt="domaci"
+                            :src="match.teams[0].organization.logo_public_url"
+                          />
                         </v-list-item-avatar>
                       </v-col>
                       <v-col class="d-flex justify-center" lg="1" xs="2">
                         {{ match.score[0] }} - {{ match.score[1] }}
-                        <div style="font-weight: bold;" v-if="match.penaltiesScore">
-                          pk {{ match.penaltiesScore[0] + ':' + match.penaltiesScore[1] }}
+                        <div
+                          style="font-weight: bold"
+                          v-if="match.penaltiesScore"
+                        >
+                          pk
+                          {{
+                            match.penaltiesScore[0] +
+                            ":" +
+                            match.penaltiesScore[1]
+                          }}
                         </div>
                       </v-col>
-                      <v-col class="d-md-flex justify-start flex-xs-3" lg="5" xs="3">
+                      <v-col
+                        class="d-md-flex justify-start flex-xs-3"
+                        lg="5"
+                        xs="3"
+                      >
                         <v-list-item-avatar>
-                          <img max-height="40" max-width="40" @error="imgError" alt="hostia"
-                            :src="match.teams[1].organization.logo_public_url">
+                          <img
+                            max-height="40"
+                            max-width="40"
+                            @error="imgError"
+                            alt="hostia"
+                            :src="match.teams[1].organization.logo_public_url"
+                          />
                         </v-list-item-avatar>
                         <div
-                          :style="match.score[0] < match.score[1] ? 'font-weight: bold; align-self: center' : 'align-self: center'">
-                          {{ match.teams[1].name }}</div>
+                          :style="
+                            match.score[0] < match.score[1]
+                              ? 'font-weight: bold; align-self: center'
+                              : 'align-self: center'
+                          "
+                        >
+                          {{ match.teams[1].name }}
+                        </div>
                       </v-col>
                     </v-list-item-content>
                   </v-list-item>
@@ -73,11 +145,9 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "FutbalnetWrapper",
-  components: {
-  },
+  components: {},
   data() {
     return {
       tab: 0,
@@ -114,49 +184,56 @@ export default {
     this.selectedTag = this.tags[0]
     this.fetchData(this.leagues[0]);
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     tagChange(index) {
       this.selectedTag = this.tags[index]
       this.fetchData(this.leagues[this.tab])
     },
     tabChange() {
-      this.fetchData(this.leagues[this.tab])
+      this.fetchData(this.leagues[this.tab]);
     },
     isVideoAvailable(videos, match) {
-      return videos.filter(v => v.competitionMatchId === match._id).length > 0
+      return (
+        videos.filter((v) => v.competitionMatchId === match._id).length > 0
+      );
+    },
+    selectChange(league) {
+      this.fetchData(league);
     },
     getAverageAge(athletes) {
-      let sum = 0
-      let count = 0
-      Array.from(athletes, a => {
-        sum += a.additionalData.age
-        count++
-      })
-      return (sum / count).toFixed(2)
+      let sum = 0;
+      let count = 0;
+      Array.from(athletes, (a) => {
+        sum += a.additionalData.age;
+        count++;
+      });
+      return (sum / count).toFixed(2);
     },
     routeTo(match) {
-      this.$router.push('/match/' + match.__issfId);
+      this.$router.push("/match/" + match.__issfId);
     },
     imgError(event) {
-      event.target.src = require('../assets/default_club_logo.png')
+      event.target.src = require("../assets/default_club_logo.png");
     },
     fetchVideo() {
-      Array.from(this.matches, c => {
+      Array.from(this.matches, (c) => {
         this.$apiV2
-          .get("public/futbalsfz.sk/videos?matchId=" + c.__issfId + "&competitionMatchId=" + c._id + "&expand_match=1")
+          .get(
+            "public/futbalsfz.sk/videos?matchId=" +
+              c.__issfId +
+              "&competitionMatchId=" +
+              c._id +
+              "&expand_match=1"
+          )
           .then((response) => {
-            this.videos.push(response.data)
+            this.videos.push(response.data);
           })
           .catch(() => {
             // this.errors.push(e);
           })
-          .finally(() => {
-          });
-      })
-
-
+          .finally(() => {});
+      });
     },
     //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
     fetchData(league) {
@@ -174,7 +251,7 @@ export default {
       this.$apiV1
         .get(league.api, { params: params })
         .then((response) => {
-          this.matches = response.data.matches
+          this.matches = response.data.matches;
         })
         .catch(() => {
           // this.errors.push(e);
@@ -183,8 +260,8 @@ export default {
           //this.fetchVideo()
         });
     },
-  }
-}
+  },
+};
 </script>
 
 <style></style>
