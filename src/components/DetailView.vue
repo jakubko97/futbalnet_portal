@@ -1,108 +1,51 @@
 <template>
     <v-container v-if="results" fluid>
+        <!-- TABS PRE MOBILNU VERZIU -->
         <v-tabs v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
-            <v-tab v-for="i in [0, 1]" :key="i">
-                <v-img class="mr-2" max-height="28" max-width="28" :src="results.teams[i].organization.logo_public_url"
-                    />
-                {{ results.teams[i].name }}
+            <v-tab v-for="i in results.teams" :key="i._id">
+                <v-img class="mr-2" max-height="28" max-width="28" :src="i.organization.logo_public_url" />
+                {{ i.name }}
             </v-tab>
         </v-tabs>
+        <!-- TAB ITEM PRE MOBILNU VERZIU -->
         <v-tabs-items v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
-            <v-tab-item v-for="(nom, index) in results.nominations" :key="nom.teamId">
-                <template v-if="$vuetify.breakpoint.name != 'xs'">
-                    <div v-if="index == 0">
-                        <v-list-item>
-                            <v-list-item-avatar>
-                                <img max-height="40" max-width="40" :src="results.teams[index].organization.logo_public_url"
-                                    @error="imgError">
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                {{ results.teams[index].name }}
-                            </v-list-item-content>
-
-                        </v-list-item>
-                        <v-subheader>Domaci</v-subheader>
-                    </div>
-                    <div v-else>
-                        <v-list-item>
-                            <v-list-item-avatar>
-                                <img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                {{ results.teams[index].name }}
-                            </v-list-item-content>
-
-                        </v-list-item>
-                        <v-subheader>Hostia</v-subheader>
-                    </div>
-                </template>
-
+            <v-tab-item v-for="(nom) in results.nominations" :key="nom.teamId">
                 <AthleteItem :events="results.protocol.events"
                     :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
                 <v-subheader>Nahradnici</v-subheader>
                 <AthleteItem :events="results.protocol.events"
                     :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
                 <v-subheader> Realizačný tím</v-subheader>
-
-
                 <AthleteItem crew :events="results.protocol.events" :athletes="nom.crew" />
-                <!-- <v-list-item v-for="(cr, idx) in nom.crew" :key="cr.position">
-                    <v-list-item-content :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''">
-                        <v-row>
-                            <v-col>
-                                <v-list-item-title class="pl-2">{{ cr.sportnetUser.name }}
-                                </v-list-item-title>
-                            </v-col>
-                            <v-col>
-                                <v-list-item-title>{{ cr.position }}
-                                </v-list-item-title>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item> -->
             </v-tab-item>
         </v-tabs-items>
-        <v-row>
-            <template v-if="$vuetify.breakpoint.name != 'xs'">
-                <v-col v-for="(nom, index) in results.nominations" :key="nom.teamId">
-                    <div v-if="index == 0">
-                        <v-list-item>
-                            <v-list-item-avatar>
-                                <img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                {{ results.teams[index].name }}
-                            </v-list-item-content>
 
-                        </v-list-item>
-                        <v-subheader>Domaci</v-subheader>
-                    </div>
-                    <div v-else>
-                        <v-list-item>
-                            <v-list-item-avatar>
-                                <img max-height="40" max-width="40"
-                                    :src="results.teams[index].organization.logo_public_url" @error="imgError">
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                {{ results.teams[index].name }}
-                            </v-list-item-content>
+        <!-- PRE DESKTOPOVU VERZIU, TEAMS NAME -->
+        <v-row v-if="$vuetify.breakpoint.name != 'xs'">
+            <v-col v-for="team in results.teams" :key="team._id">
+                <v-list-item>
+                    <v-list-item-avatar>
+                        <img max-height="40" max-width="40" :src="team.organization.logo_public_url" @error="imgError">
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        {{ team.name }}
+                    </v-list-item-content>
 
-                        </v-list-item>
-                        <v-subheader>Hostia</v-subheader>
-                    </div>
-                    <AthleteItem :events="results.protocol.events"
-                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
-                    <v-subheader>Nahradnici</v-subheader>
-                    <AthleteItem :events="results.protocol.events"
-                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
-                    <v-subheader> Realizačný tím</v-subheader>
-
-
-                    <AthleteItem crew :events="results.protocol.events" :athletes="nom.crew" />
-                </v-col>
-            </template>
+                </v-list-item>
+                <v-subheader>{{ team.additionalProperties.homeaway }}</v-subheader>
+            </v-col>
+        </v-row>
+        <!-- PRE DESKTOPOVU VERZIU, TEAMS CONTENT, ZOSTAVY -->
+        <v-row v-if="$vuetify.breakpoint.name != 'xs'">
+            <v-col v-for="(nom) in results.nominations" :key="nom.teamId">
+                <AthleteItem :events="results.protocol.events"
+                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
+                <v-subheader>Nahradnici</v-subheader>
+                <AthleteItem :events="results.protocol.events"
+                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
+                <v-subheader> Realizačný tím</v-subheader>
+                <AthleteItem crew :events="results.protocol.events" :athletes="nom.crew" />
+            </v-col>
         </v-row>
     </v-container>
 </template>
