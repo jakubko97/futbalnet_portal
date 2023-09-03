@@ -93,7 +93,9 @@
                               : 'align-self: center'
                           "
                         >
-                          {{ match.teams[0].name }}
+                          <div :class="isMatchLive(match) ? 'red--text' : ''">
+                            {{ match.teams[0].name }}
+                          </div>
                         </div>
                         <v-list-item-avatar>
                           <img
@@ -106,7 +108,10 @@
                         </v-list-item-avatar>
                       </v-col>
                       <v-col class="d-flex justify-center" lg="1" xs="2">
-                        {{ match.score[0] }} - {{ match.score[1] }}
+                        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+                        <p :class="isMatchLive(match) ? 'red--text' : ''">
+                          {{ match.score[0] }} - {{ match.score[1] }}
+                        </p>
                         <div
                           style="font-weight: bold"
                           v-if="match.penaltiesScore"
@@ -134,6 +139,7 @@
                           />
                         </v-list-item-avatar>
                         <div
+                          :class="isMatchLive(match) ? 'red--text' : ''"
                           :style="
                             match.score[0] < match.score[1]
                               ? 'font-weight: bold; align-self: center'
@@ -248,6 +254,9 @@ export default {
         count++;
       });
       return (sum / count).toFixed(2);
+    },
+    isMatchLive(match) {
+      return !match.closed && match.scoreByPhases.length > 0;
     },
     routeTo(match) {
       this.$router.push("/match/" + match.__issfId);
