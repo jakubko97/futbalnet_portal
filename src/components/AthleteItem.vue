@@ -15,6 +15,8 @@
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
+                                            v-if="ev.eventType == 'failed_goal' && ev.type == 'failed_goal_penalty'" :src="require('../assets/missed_penalty.png')" />
+                                        <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
                                             v-if="ev.eventType == 'goal' && ev.type == 'dropped'" :src="require('../assets/own_goal.png')" />
                                         <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
                                             v-if="ev.eventType == 'goal' && ev.type != 'dropped'" :src="require('../assets/ball.png')" />
@@ -31,6 +33,7 @@
                                     </template>
                                     <span v-if="ev.reason">{{ ev.eventTime + ' ' + ev.reason }}</span>
                                     <span v-if="ev.eventType == 'goal'">{{ ev.eventTime + ' ' + ev.type_sk }}</span>
+                                    <span v-if="ev.eventType == 'failed_goal'">{{ ev.eventTime + ' ' + ev.type_sk }}</span>
                                     <span v-if="ev.eventType == 'substitution'">{{ ev.eventTime }} Striedanie</span>
                                 </v-tooltip>
 
@@ -83,6 +86,9 @@ export default {
                     e.type_sk = 'Gól z hry'
                 }else if(e.type == 'goal_penalty'){
                     e.type_sk = 'Penalta'
+                }
+                else if(e.type == 'failed_goal_penalty'){
+                    e.type_sk = 'Nepremenená penalta'
                 }else if(e.type == 'dropped'){
                     e.type_sk = 'Vlastný gól'
                 }else if(e.type == 'goal_standard'){
