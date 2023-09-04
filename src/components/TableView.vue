@@ -11,6 +11,11 @@
                 {{ item.club_name }}
             </div>
         </template>
+        <template #[`item.position`]="{ item }">
+            <v-chip :outlined="nonColoredPositions(item)" :class="coloringPosition(item)">
+                {{ item.position }}.
+            </v-chip>
+        </template>
     </v-data-table>
 </template>
     
@@ -26,6 +31,10 @@ export default {
         tableData: {
             type: Array,
             required: true
+        },
+        league: {
+            type: Object,
+            required: true
         }
     },
     watch : {
@@ -36,6 +45,24 @@ export default {
     components: {
     },
     methods: {
+        nonColoredPositions(item){
+            return !this.league.promotion.includes(item.position) && this.league.relegation.filter(a => this.tableData.length - a + 1 == item.position).length == 0
+        },
+        coloringPosition(item){
+            let coloring = ''
+            if(this.league.promotion.includes(item.position)){
+                coloring += 'primary white--text'
+            }
+            else{
+                Array.from(this.league.relegation, i => {
+                    let idx = this.tableData.length - i + 1 //calculate last indexes for relegated positions
+                    if(idx == item.position){
+                        coloring += 'red white--text' 
+                    }
+                })
+            }
+            return coloring
+        },
         initTable() {
             this.teams = []
             let idx = 0
