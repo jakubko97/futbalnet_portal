@@ -46,18 +46,18 @@ export default {
     },
     methods: {
         nonColoredPositions(item){
-            return !this.league.promotion.includes(item.position) && this.league.relegation.filter(a => this.tableData.length - a + 1 == item.position).length == 0
+            return !this.league.promotion.includes(item.position) && this.league.relegation.filter(a => this.teams.length - a + 1 == item.position).length == 0
         },
         coloringPosition(item){
             let coloring = ''
             if(this.league.promotion.includes(item.position)){
-                coloring += 'primary white--text'
+                coloring = 'primary white--text'
             }
             else{
                 Array.from(this.league.relegation, i => {
-                    let idx = this.tableData.length - i + 1 //calculate last indexes for relegated positions
+                    let idx = this.teams.length - i + 1 //calculate last indexes for relegated positions
                     if(idx == item.position){
-                        coloring += 'red white--text' 
+                        coloring = 'red white--text' 
                     }
                 })
             }
