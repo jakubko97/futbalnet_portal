@@ -8,15 +8,18 @@
             <v-img max-height="20" max-width="20" :src="item.logo" />
         </template> -->
         <template #[`item.club_name`]="{ item }">
-            <div :class="favTeams.includes(item.club_name) ? 'font-weight-bold d-inline-flex' : 'd-inline-flex align-center'">
-            <v-img class="mr-2" max-height="20" max-width="20" :src="item.logo" />
+            <div
+                :class="favTeams.includes(item.club_name) ? 'font-weight-bold d-inline-flex' : 'd-inline-flex align-center'">
+                <v-img class="mr-2" max-height="20" max-width="20" :src="item.logo" />
                 {{ item.club_name }}
             </div>
         </template>
         <template #[`item.position`]="{ item }">
-            <v-chip :outlined="nonColoredPositions(item)" :class="coloringPosition(item)">
-                {{ item.position }}.
-            </v-chip>
+            <td class="pa-1 ma-0">
+                <v-chip :outlined="nonColoredPositions(item)" :class="coloringPosition(item)">
+                    {{ item.position }}.
+                </v-chip>
+            </td>
         </template>
     </v-data-table>
 </template>
