@@ -12,7 +12,7 @@
                     </span>
                     <v-row style="float: right">
                         <template v-for="ev in getEventByUserId(ath.sportnetUser._id)">
-                            <v-col :key="ev.eventTime + ev.eventType">
+                            <v-col class="d-flex justify-center" :key="ev.eventTime + ev.eventType">
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
                                         <EventTypeImg :event="ev" :on="on" :attrs="attrs" />
