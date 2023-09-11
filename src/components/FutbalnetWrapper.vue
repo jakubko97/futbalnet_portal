@@ -193,6 +193,9 @@ export default {
         name: 'III. Východ', api: 'public/futbalsfz.sk/competitions/6477ac257b634444d118634a/parts/647a3f3b76d0d348cd095fa9/matches', promotion: [1], relegation: [1, 2]
       },
       {
+        name: 'II.', api: 'public/futbalsfz.sk/competitions/647904787b634444d148590a/parts/6479047876d0d348cd095d6b/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
         name: 'Niké Liga', api: 'public/ulk.futbalnet.sk/competitions/64997173eebe726b04698003/parts/649abbbb76d0d348cd09aa12/matches', promotion: [1], relegation: [1, 2]
       },
       {
