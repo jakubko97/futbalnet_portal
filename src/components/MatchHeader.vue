@@ -16,10 +16,10 @@
                 <v-row class="d-flex justify-center display-3">
                     {{ printScore(matchData.score) }}
                 </v-row>
-                <v-row class="d-flex justify-center">
+                <v-row v-if="matchData.scoreByPhases.length > 0" class="d-flex justify-center">
                     {{ '(' + printScore(matchData.scoreByPhases[0]) + ',' + printScore(matchData.scoreByPhases[1]) + ')' }}
                 </v-row>
-                <v-row class="d-flex justify-center">
+                <v-row v-if="matchData.protocol.audience" class="d-flex justify-center">
                     {{ matchData.protocol.audience }} divákov
                 </v-row>
             </v-col>
@@ -47,7 +47,10 @@ export default {
     },
     methods: {
         printScore(score) {
-            return score[0] + ':' + score[1]
+            if (score.length > 0) {
+                return score[0] + ':' + score[1]
+            }
+            return ''
         },
         imgError(event) {
             event.target.src = require('../assets/default_club_logo.png')

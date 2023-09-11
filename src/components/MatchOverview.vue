@@ -2,16 +2,21 @@
     <div>
         <v-timeline>
             <v-timeline-item v-for="(ev, index) in events" :key="index" :left="teamsId[0] == ev.team"
-                :right="teamsId[1] == ev.team" >
+                :right="teamsId[1] == ev.team">
                 <!-- design row patter for left side team -->
                 <v-row v-if="teamsId[0] == ev.team" class="pt-1">
                     <v-col class="d-flex justify-end pa-2" cols="11">
                         <div class="mr-4">
                             <v-row class="d-flex justify-end font-weight-bold">
-                                {{ ev.player.name }}
+                                <div v-if="ev.player">
+                                    {{ ev.player.name }}
+                                </div>
+                                <div v-if="ev.player == null && ev.crewMember">
+                                    {{ ev.crewMember.name }}
+                                </div>
                             </v-row>
-                            <v-row class="d-flex justify-end caption">
-                                <div v-if="ev.reason">
+                            <v-row class="d-flex justify-end caption text-wrap">
+                                    <div v-if="ev.reason">
                                     {{ ev.reason }}
                                 </div>
                                 <div v-if="ev.reason == null && ev.type_sk">
@@ -20,6 +25,7 @@
                                 <div v-if="ev.reason == null && ev.replacement != null">
                                     Striedajúci: {{ ev.replacement.name }}
                                 </div>
+                          
                             </v-row>
                         </div>
                         <EventTypeImg :event="ev" />
@@ -39,7 +45,12 @@
                         <EventTypeImg :event="ev" />
                         <div class="ml-4">
                             <v-row class="d-flex justify-start font-weight-bold">
-                                {{ ev.player.name }}
+                                <div v-if="ev.player">
+                                    {{ ev.player.name }}
+                                </div>
+                                <div v-if="ev.player == null && ev.crewMember">
+                                    {{ ev.crewMember.name }}
+                                </div>
                             </v-row>
                             <v-row class="caption">
                                 <div v-if="ev.reason">
