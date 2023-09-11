@@ -1,6 +1,6 @@
 <template>
-    <v-container class="mt-6" v-if="matchData">
-        <MatchHeader :match-data="matchData" />
+    <v-container class="ma-0 pa-0 mt-6" v-if="matchData">
+        <MatchHeader class="ma-2 pa-2" :match-data="matchData" />
         <v-tabs v-model="tab" centered>
             <v-tab>Prehľad</v-tab>
             <v-tab>Zostavy</v-tab>

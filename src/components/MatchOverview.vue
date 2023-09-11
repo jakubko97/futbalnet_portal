@@ -2,7 +2,7 @@
     <div>
         <v-timeline>
             <v-timeline-item v-for="(ev, index) in events" :key="index" :left="teamsId[0] == ev.team"
-                :right="teamsId[1] == ev.team">
+                :right="teamsId[1] == ev.team" >
                 <!-- design row patter for left side team -->
                 <v-row v-if="teamsId[0] == ev.team" class="pt-1">
                     <v-col class="d-flex justify-end pa-2" cols="11">
