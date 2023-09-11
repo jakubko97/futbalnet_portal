@@ -4,6 +4,7 @@
         <v-tabs v-model="tab" centered>
             <v-tab>Prehľad</v-tab>
             <v-tab>Zostavy</v-tab>
+            <v-tab>Videozaznam</v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
             <v-tab-item>
@@ -13,6 +14,9 @@
             <v-tab-item>
                 <LineUps :match-data="matchData" />
             </v-tab-item>
+            <v-tab-item>
+                <VideoZaznamView :match="matchData" />
+            </v-tab-item>
         </v-tabs-items>
     </v-container>
 </template>
@@ -21,13 +25,15 @@
 import LineUps from "./LineUps.vue";
 import MatchHeader from "./MatchHeader.vue";
 import MatchOverview from "./MatchOverview.vue";
+import VideoZaznamView from "./VideoZaznamView.vue";
 
 export default {
     name: 'MatchView',
     components: {
         MatchOverview,
         MatchHeader,
-        LineUps
+        LineUps,
+        VideoZaznamView
     },
     created() {
         this.fetchData()
