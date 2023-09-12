@@ -8,8 +8,8 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
             <v-tab-item>
-                <MatchOverview :events="matchData.protocol.events"
-                    :teams-id="[matchData.teams[0]._id, matchData.teams[1]._id]" />
+                <MatchOverview :events="matchData.protocol.events" :penalties-score="matchData.penaltiesScore"
+                    :teams-id="[matchData.teams[0]._id, matchData.teams[1]._id]" :score-phases="matchData.scoreByPhases" />
             </v-tab-item>
             <v-tab-item>
                 <LineUps :match-data="matchData" />
@@ -61,9 +61,6 @@ export default {
                     e.type_sk = 'Štandartka'
                 }
             })
-        },
-        printScore(score) {
-            return score[0] + ':' + score[1]
         },
         imgError(event) {
             event.target.src = require('../assets/default_club_logo.png')

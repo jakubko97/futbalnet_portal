@@ -1,16 +1,24 @@
 <template>
     <div>
-        <v-row class="d-flex justify-center mt-2">1.polčas</v-row>
+        <v-row class="d-flex justify-center my-1 subtitle-2">1.polčas {{
+            printScore(scorePhases[0]) }}</v-row>
         <v-timeline v-if="$vuetify.breakpoint.name != 'xs'">
             <TimelineCustom v-for="(ev, index) in events.filter(r => r.phase == '1HT')" :key="index + ev.phase" :ev="ev"
                 :teams-id="teamsId" />
         </v-timeline>
-        <v-row class="d-flex justify-center my-1">2.polčas</v-row>
+        <v-row class="d-flex justify-center my-1 subtitle-2">2.polčas {{
+            printScore(scorePhases[1]) }}</v-row>
         <v-timeline v-if="$vuetify.breakpoint.name != 'xs'">
             <TimelineCustom v-for="(ev, index) in events.filter(r => r.phase == '2HT')" :key="index + ev.phase" :ev="ev"
                 :teams-id="teamsId" />
         </v-timeline>
-        <v-row class="d-flex justify-center my-1">Koniec</v-row>
+        <v-row v-if="events.filter(r => r.phase == 'shootout').length > 0" class="d-flex justify-center my-1 subtitle-2">Penalty {{
+            printScore(penaltiesScore) }}</v-row>
+        <v-timeline v-if="$vuetify.breakpoint.name != 'xs'">
+            <TimelineCustom v-for="(ev, index) in events.filter(r => r.phase == 'shootout')" :event-index="index + 1"
+                :key="index + ev.phase" :ev="ev" :teams-id="teamsId" />
+        </v-timeline>
+        <v-row class="d-flex justify-center my-1 subtitle-2">Koniec</v-row>
         <v-container class="mt-5" v-if="$vuetify.breakpoint.name == 'xs'">
             <template v-for="(ev, index) in events">
                 <v-row v-if="teamsId[0] == ev.team" :key="index">
@@ -88,6 +96,14 @@ import TimelineCustom from './TimelineCustom.vue';
 export default {
     name: 'MatchOverview',
     props: {
+        scorePhases: {
+            type: Array,
+            required: true
+        },
+        penaltiesScore: {
+            type: Array,
+            default: null
+        },
         events: {
             type: Array,
             required: true
@@ -108,5 +124,10 @@ export default {
         checkbox1: false
         //
     }),
+    methods: {
+        printScore(score) {
+            return score[0] + ':' + score[1]
+        },
+    }
 };
 </script>

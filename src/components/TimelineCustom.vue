@@ -1,8 +1,10 @@
 <template>
     <v-timeline-item color="transparent" small :left="teamsId[0] == ev.team" :right="teamsId[1] == ev.team">
         <template v-slot:icon>
-            <strong class=""> {{ parseInt(ev.eventTime) }}
+            <strong v-if="ev.eventTime" class=""> {{ parseInt(ev.eventTime) }}
             </strong> '
+            <strong v-if="ev.eventTime == null" class=""> {{ eventIndex }}
+            </strong> 
         </template>
         <!-- design row patter for left side team -->
         <v-row v-if="teamsId[0] == ev.team" class="pt-1">
@@ -76,6 +78,10 @@ import EventTypeImg from './EventTypeImg.vue';
 export default {
     name: 'TimelineCustom',
     props: {
+        eventIndex: {
+            type: Number,
+            default: 0
+        },
         ev: {
             type: Object,
             required: true
