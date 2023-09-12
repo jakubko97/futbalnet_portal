@@ -177,7 +177,7 @@ export default {
       matches: [],
       tags: [
         { name: 'Program', closed: false, limit: 12 },
-        { name: 'Vysledky', closed: true, limit: 12 },
+        { name: 'Vysledky', closed: true, limit: 40 },
         { name: 'Tabuľka', closed: true, table: true, limit: null }
       ],
       leagues: [{
