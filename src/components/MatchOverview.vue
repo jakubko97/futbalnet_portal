@@ -1,11 +1,15 @@
 <template>
     <div>
         <v-timeline v-if="$vuetify.breakpoint.name != 'xs'">
-            <v-timeline-item small v-for="(ev, index) in events" :key="index" :left="teamsId[0] == ev.team"
+            <v-timeline-item color="transparent" small v-for="(ev, index) in events" :key="index" :left="teamsId[0] == ev.team"
                 :right="teamsId[1] == ev.team">
+                <template v-slot:icon>
+                    <strong class=""> {{ parseInt(ev.eventTime) }}
+                    </strong> '
+                </template>
                 <!-- design row patter for left side team -->
                 <v-row v-if="teamsId[0] == ev.team" class="pt-1">
-                    <v-col class="d-flex justify-end pa-2" cols="11">
+                    <v-col class="d-flex justify-end pa-2" cols="12">
                         <div class="mr-4">
                             <v-row class="d-flex justify-end font-weight-bold">
                                 <div v-if="ev.player">
@@ -30,18 +34,18 @@
                         </div>
                         <EventTypeImg :event="ev" />
                     </v-col>
-                    <v-col class="d-flex justify-end pa-2" cols="1">
+                    <!-- <v-col class="d-flex justify-end pa-0" cols="1">
                         <strong> {{ ev.eventTime }}
                         </strong>
-                    </v-col>
+                    </v-col> -->
                 </v-row>
                 <!-- design row patter for RIGHT side team -->
                 <v-row v-if="teamsId[1] == ev.team" class="pt-1">
-                    <v-col class="d-flex justify-start pa-2" cols="1">
+                    <!-- <v-col class="d-flex justify-start pa-2" cols="1">
                         <strong> {{ ev.eventTime }}
-                        </strong>
-                    </v-col>
-                    <v-col class="d-flex justify-start pa-2" cols="11">
+                        </strong> -->
+                    <!-- </v-col> -->
+                    <v-col class="d-flex justify-start pa-2" cols="12">
                         <EventTypeImg :event="ev" />
                         <div class="ml-4">
                             <v-row class="d-flex justify-start font-weight-bold">
@@ -158,6 +162,7 @@ export default {
     },
 
     data: () => ({
+        checkbox1: false
         //
     }),
 };

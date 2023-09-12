@@ -1,10 +1,12 @@
 <template>
     <v-container v-if="matchData" fluid>
         <!-- TABS PRE MOBILNU VERZIU -->
-        <v-tabs hide-slider v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
-            <v-tab v-for="i in matchData.teams" :key="i._id">
+        <v-tabs centered hide-slider v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
+            <v-tab v-for="(i, idx) in matchData.teams" :key="i._id">
                 <v-img class="mr-2" max-height="28" max-width="28" :src="i.organization.logo_public_url" />
-                {{ i.name }}
+                <!-- {{ i.name }} -->
+                <div v-if="idx == 0">Domáci</div>
+                <div v-else>Hostia</div>
             </v-tab>
         </v-tabs>
         <!-- TAB ITEM PRE MOBILNU VERZIU -->
@@ -47,9 +49,9 @@
                 <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
             </v-col>
         </v-row>
-        <v-row class="mt-6" v-else>
+        <v-row class="mt-6" v-if="matchData.nominations.length == 0">
             <v-col class="d-flex justify-center">
-                Zostavy nie su zatiaľ dostupné
+                Zostavy zatiaľ nie sú dostupné
             </v-col>
         </v-row>
     </v-container>

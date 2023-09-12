@@ -46,7 +46,7 @@ export default {
         formatEventType() {
             Array.from(this.matchData.protocol.events, e => {
                 if (e.eventTime) {
-                    e.eventTime = e.eventTime.substring(0, 2) + '´'
+                    e.eventTime = e.eventTime.substring(0, 2) + "'"
                 }
                 if (e.type == 'goal_game') {
                     e.type_sk = 'Gól z hry'
