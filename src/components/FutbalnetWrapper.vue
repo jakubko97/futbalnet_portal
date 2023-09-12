@@ -3,49 +3,28 @@
     <v-container class="ma-0 pa-2" fluid>
       <!-- PRE DESKTOPOVU VERZIU, TABS LEAGUE NAMES -->
       <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
-        <v-tab
-          @click="fetchData(league)"
-          v-for="league in leagues"
-          :key="league.name"
-        >
+        <v-tab @click="fetchData(league)" v-for="league in leagues" :key="league.name">
           {{ league.name }}
         </v-tab>
       </v-tabs>
       <!-- PRE MOBILNU VERZIU, COMBOBOX LEAGUE LIST -->
       <v-row v-else>
         <v-col cols="12">
-          <v-combobox
-            hide-details
-            v-model="selectedLeague"
-            :items="leagues"
-            label="League"
-            item-text="name"
-            outlined
-            @change="selectChange"
-            dense
-          ></v-combobox>
+          <v-combobox hide-details v-model="selectedLeague" :items="leagues" label="League" item-text="name" outlined
+            @change="selectChange" dense></v-combobox>
         </v-col>
       </v-row>
       <!-- TAGS PRE DETAILNY VYBER KONTENTU (Program, vysledky, tabulka...) -->
       <v-row>
         <v-col cols="12">
-          <v-chip-group
-            mandatory
-            @change="tagChange"
-            active-class="primary--text"
-            column
-          >
+          <v-chip-group mandatory @change="tagChange" active-class="primary--text" column>
             <v-chip v-for="tag in tags" :key="tag.name">
               {{ tag.name }}
             </v-chip>
           </v-chip-group>
         </v-col>
       </v-row>
-      <v-tabs-items
-        v-if="!selectedTag.table"
-        @change="tabChange()"
-        v-model="tab"
-      >
+      <v-tabs-items v-if="!selectedTag.table && !selectedTag.redCards" @change="tabChange()" v-model="tab">
         <v-tab-item v-for="league in leagues" :key="league.name">
           <v-list v-if="matches != null" dense>
             <!-- <v-subheader>Vysledky</v-subheader> -->
@@ -74,37 +53,20 @@
                       </template> -->
                     </v-col>
                   </v-row>
-                  <v-list-item
-                    @click="routeTo(match)"
-                    :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''"
-                    dense
-                  >
+                  <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
                     <v-list-item-content>
-                      <v-col
-                        class="d-md-flex justify-end flex-xs-1-0"
-                        style="justify-content: right: ;"
-                        lg="5"
-                        xs="3"
-                      >
-                        <div
-                          :style="
-                            match.score[0] > match.score[1]
-                              ? 'font-weight: bold; align-self: center'
-                              : 'align-self: center'
-                          "
-                        >
+                      <v-col class="d-md-flex justify-end flex-xs-1-0" style="justify-content: right: ;" lg="5" xs="3">
+                        <div :style="match.score[0] > match.score[1]
+                          ? 'font-weight: bold; align-self: center'
+                          : 'align-self: center'
+                          ">
                           <div :class="isMatchLive(match) ? 'red--text' : ''">
                             {{ match.teams[0].name }}
                           </div>
                         </div>
                         <v-list-item-avatar>
-                          <img
-                            max-height="40"
-                            max-width="40"
-                            @error="imgError"
-                            alt="domaci"
-                            :src="match.teams[0].organization.logo_public_url"
-                          />
+                          <img max-height="40" max-width="40" @error="imgError" alt="domaci"
+                            :src="match.teams[0].organization.logo_public_url" />
                         </v-list-item-avatar>
                       </v-col>
                       <v-col class="d-flex justify-center" lg="1" xs="2">
@@ -112,10 +74,7 @@
                         <p :class="isMatchLive(match) ? 'red--text' : ''">
                           {{ match.score[0] }} - {{ match.score[1] }}
                         </p>
-                        <div
-                          style="font-weight: bold"
-                          v-if="match.penaltiesScore"
-                        >
+                        <div style="font-weight: bold" v-if="match.penaltiesScore">
                           pk
                           {{
                             match.penaltiesScore[0] +
@@ -124,28 +83,15 @@
                           }}
                         </div>
                       </v-col>
-                      <v-col
-                        class="d-md-flex justify-start flex-xs-3"
-                        lg="5"
-                        xs="3"
-                      >
+                      <v-col class="d-md-flex justify-start flex-xs-3" lg="5" xs="3">
                         <v-list-item-avatar>
-                          <img
-                            max-height="40"
-                            max-width="40"
-                            @error="imgError"
-                            alt="hostia"
-                            :src="match.teams[1].organization.logo_public_url"
-                          />
+                          <img max-height="40" max-width="40" @error="imgError" alt="hostia"
+                            :src="match.teams[1].organization.logo_public_url" />
                         </v-list-item-avatar>
-                        <div
-                          :class="isMatchLive(match) ? 'red--text' : ''"
-                          :style="
-                            match.score[0] < match.score[1]
-                              ? 'font-weight: bold; align-self: center'
-                              : 'align-self: center'
-                          "
-                        >
+                        <div :class="isMatchLive(match) ? 'red--text' : ''" :style="match.score[0] < match.score[1]
+                          ? 'font-weight: bold; align-self: center'
+                          : 'align-self: center'
+                          ">
                           {{ match.teams[1].name }}
                         </div>
                       </v-col>
@@ -158,14 +104,17 @@
         </v-tab-item>
       </v-tabs-items>
       <TableView v-if="selectedTag.table" :table-data="matches" :league="selectedLeague" />
+      <RedCardsView v-if="selectedTag.redCards" :league="selectedLeague" :data="redCards" />
     </v-container>
   </div>
 </template>
 <script>
 import TableView from "./TableView.vue";
+import RedCardsView from "./RedCardsView.vue";
+
 export default {
   name: "FutbalnetWrapper",
-  components: { TableView },
+  components: { TableView, RedCardsView },
   data() {
     return {
       tab: 0,
@@ -174,11 +123,13 @@ export default {
       selectedMatch: null,
       videos: [],
       selectedLeague: null,
+      redCards: [],
       matches: [],
       tags: [
         { name: 'Program', closed: false, limit: 12 },
         { name: 'Vysledky', closed: true, limit: 32 },
-        { name: 'Tabuľka', closed: true, table: true, limit: null }
+        { name: 'Tabuľka', closed: true, table: true, limit: null },
+        { name: 'Red Cards', closed: true, redCards: true, limit: null }
       ],
       leagues: [{
         name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches', promotion: [1], relegation: [1, 2]
@@ -250,15 +201,40 @@ export default {
     imgError(event) {
       event.target.src = require("../assets/default_club_logo.png");
     },
+    async retrieveRedCards() {
+      this.redCards = []
+      let matchDetails = []
+      if (this.selectedTag.closed) {
+        Array.from(this.matches, m => {
+          let matchDetail = null
+          this.$apiV1
+            .get("matches/" + m.__issfId)
+            .then((response) => {
+              matchDetail = response.data
+              matchDetails.push(matchDetail)
+            })
+            .catch(() => {
+            })
+            .finally(() => {
+              Array.from(matchDetail.protocol.events, e => {
+                if (e.eventType === 'red_card') {
+                  this.redCards.push(e)
+                }
+              })
+            });
+        })
+      }
+      console.log(this.redCards)
+    },
     fetchVideo() {
       Array.from(this.matches, (c) => {
         this.$apiV2
           .get(
             "public/futbalsfz.sk/videos?matchId=" +
-              c.__issfId +
-              "&competitionMatchId=" +
-              c._id +
-              "&expand_match=1"
+            c.__issfId +
+            "&competitionMatchId=" +
+            c._id +
+            "&expand_match=1"
           )
           .then((response) => {
             this.videos.push(response.data);
@@ -266,7 +242,7 @@ export default {
           .catch(() => {
             // this.errors.push(e);
           })
-          .finally(() => {});
+          .finally(() => { });
       });
     },
     //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
@@ -290,6 +266,7 @@ export default {
         })
         .finally(() => {
           //this.fetchVideo()
+          this.retrieveRedCards()
         });
     },
   },
