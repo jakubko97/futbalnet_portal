@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="matchData" fluid>
+    <v-container v-if="matchData" fluid class="ma-0 pa-0">
         <!-- TABS PRE MOBILNU VERZIU -->
         <v-tabs centered hide-slider v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
             <v-tab v-for="(i, idx) in matchData.teams" :key="i._id">
