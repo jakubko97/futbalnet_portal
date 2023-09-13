@@ -129,7 +129,7 @@ export default {
         { name: 'Program', closed: false, limit: 12 },
         { name: 'Vysledky', closed: true, limit: 32 },
         { name: 'Tabuľka', closed: true, table: true, limit: null },
-        { name: 'Red Cards', closed: true, redCards: true, limit: null }
+        { name: 'Č. Karty', closed: true, redCards: true, limit: null }
       ],
       leagues: [{
         name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches', promotion: [1], relegation: [1, 2]
@@ -201,7 +201,7 @@ export default {
     imgError(event) {
       event.target.src = require("../assets/default_club_logo.png");
     },
-    async retrieveRedCards() {
+    retrieveRedCards() {
       this.redCards = []
       let matchDetails = []
       if (this.selectedTag.closed) {
@@ -218,13 +218,17 @@ export default {
             .finally(() => {
               Array.from(matchDetail.protocol.events, e => {
                 if (e.eventType === 'red_card') {
+                  Array.from(matchDetail.teams, t => {
+                    if(t._id === e.team){
+                      e.teamName = t.name //assign actual name by teamId
+                    }
+                  })
                   this.redCards.push(e)
                 }
               })
             });
         })
       }
-      console.log(this.redCards)
     },
     fetchVideo() {
       Array.from(this.matches, (c) => {

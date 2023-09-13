@@ -1,5 +1,5 @@
 <template>
-    <v-container class="ma-0 pa-0 mt-6" v-if="matchData">
+    <v-container class="ma-0 pa-0 mt-6" v-if="matchData" fluid>
         <MatchHeader class="ma-2 pa-2" :match-data="matchData" />
         <v-tabs v-model="tab" centered>
             <v-tab>Prehľad</v-tab>

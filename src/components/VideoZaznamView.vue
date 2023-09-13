@@ -8,10 +8,11 @@
                 <v-row class="d-flex justify-center">
                     <video controls>
                         <source :src="'https://video.sportnet.online/videospace/' + video.path" :type="video.type" />
-                        <!-- <p>
-                    Your browser doesn't support HTML video. Here is a
-                    <a :href="'https://video.sportnet.online/videospace/' + video.path">link to the video</a> instead.
-                </p> -->
+                        <p>
+                            Your browser doesn't support HTML video. Here is a
+                            <a :href="'https://video.sportnet.online/videospace/' + video.path">link to the video</a>
+                            instead.
+                        </p>
                     </video>
                 </v-row>
                 <v-row class="d-flex justify-center pa-2">

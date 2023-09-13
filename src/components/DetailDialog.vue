@@ -3,10 +3,6 @@
         :loading-save-button="loading" v-model="dialog" title="Detail">
         <v-card>
             <v-card-text>
-                <v-container>
-                    dpc
-                </v-container>
-
             </v-card-text>
         </v-card>
     </CsDialog>

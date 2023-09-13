@@ -37,7 +37,7 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
-        <div v-if="!crew && athletes.length > 0" class="ma-2 pa-2">Avg age: {{ getAverageAge() }}</div>
+        <div v-if="!crew && athletes.length > 0" class="ma-2 pa-2">Priemerný vek: {{ getAverageAge() }}</div>
     </div>
 </template>
   

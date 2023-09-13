@@ -3,7 +3,7 @@
         <!-- TABS PRE MOBILNU VERZIU -->
         <v-tabs centered hide-slider v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
             <v-tab v-for="(i, idx) in matchData.teams" :key="i._id">
-                <v-img class="mr-2" max-height="28" max-width="28" :src="i.organization.logo_public_url" />
+                <v-img class="mr-2" max-height="22" max-width="22" :src="i.organization.logo_public_url" />
                 <!-- {{ i.name }} -->
                 <div v-if="idx == 0">Domáci</div>
                 <div v-else>Hostia</div>
