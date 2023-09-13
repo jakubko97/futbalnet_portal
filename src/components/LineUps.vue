@@ -11,15 +11,17 @@
         </v-tabs>
         <!-- TAB ITEM PRE MOBILNU VERZIU -->
         <v-tabs-items v-if="$vuetify.breakpoint.name == 'xs' && matchData.nominations.length > 0" v-model="tab">
-            <v-tab-item v-for="(nom) in matchData.nominations" :key="nom.teamId">
-                <AthleteItem :events="matchData.protocol.events"
-                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
-                <v-subheader>Nahradnici</v-subheader>
-                <AthleteItem :events="matchData.protocol.events"
-                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
-                <v-subheader> Realizačný tím</v-subheader>
-                <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
-            </v-tab-item>
+            <template v-for="(nom) in matchData.nominations">
+                <v-tab-item :key="nom.teamId">
+                    <AthleteItem :events="matchData.protocol.events"
+                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
+                    <v-subheader>Nahradnici</v-subheader>
+                    <AthleteItem :events="matchData.protocol.events"
+                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
+                    <v-subheader> Realizačný tím</v-subheader>
+                    <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
+                </v-tab-item>
+            </template>
         </v-tabs-items>
         <div class="d-flex justify-center" v-if="$vuetify.breakpoint.name == 'xs' && matchData.nominations.length == 0">
             Nominácia zatiaľ nebola uzatvorená
