@@ -1,10 +1,10 @@
 <template>
     <v-timeline-item color="transparent" small :left="teamsId[0] == ev.team" :right="teamsId[1] == ev.team">
         <template v-slot:icon>
-            <strong v-if="ev.eventTime" class=""> {{ parseInt(ev.eventTime) }}
-            </strong> '
-            <strong v-if="ev.eventTime == null" class=""> {{ eventIndex }}
-            </strong> 
+                <strong v-if="ev.eventTime" class=""> {{ parseInt(ev.eventTime) }}
+                </strong> '
+                <strong v-if="ev.eventTime == null" class=""> {{ eventIndex }}
+                </strong>
         </template>
         <!-- design row patter for left side team -->
         <v-row v-if="teamsId[0] == ev.team" class="pt-1">
@@ -100,3 +100,12 @@ export default {
     }),
 };
 </script>
+<style>
+.v-timeline-item__dot {
+    z-index: 2;
+    border-radius: 50%;
+    height: 22px;
+    text-align: center;
+    box-shadow: none;
+}
+</style>
