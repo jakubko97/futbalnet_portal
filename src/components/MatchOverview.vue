@@ -28,7 +28,7 @@
         </template>
 
         <!-- OVERVIEW FOR MOBILE VERSION -->
-        <v-container class="mt-5" v-if="$vuetify.breakpoint.name == 'xs'" fluid>
+        <v-container class="mt-5" v-if="$vuetify.breakpoint.name == 'xs' && scorePhases.length > 0" fluid>
             <v-row style="background-color: aliceblue;">
                 <v-col class="d-flex justify-start ma-0 pa-0 px-3" cols="6">
                     1.polčas
