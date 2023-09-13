@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- TIMELINE FOR DESKTOP VERSION -->
-        <template v-if="$vuetify.breakpoint.name != 'xs'">
+        <template v-if="$vuetify.breakpoint.name != 'xs' && scorePhases.length > 0">
             <v-row class="d-flex justify-center my-1 subtitle-2">1.polčas {{
                 printScore(scorePhases[0]) }}</v-row>
             <!-- PRE 1.POLCAS -->

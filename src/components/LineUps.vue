@@ -10,7 +10,7 @@
             </v-tab>
         </v-tabs>
         <!-- TAB ITEM PRE MOBILNU VERZIU -->
-        <v-tabs-items v-if="$vuetify.breakpoint.name == 'xs'" v-model="tab">
+        <v-tabs-items v-if="$vuetify.breakpoint.name == 'xs' && matchData.nominations.length > 0" v-model="tab">
             <v-tab-item v-for="(nom) in matchData.nominations" :key="nom.teamId">
                 <AthleteItem :events="matchData.protocol.events"
                     :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
@@ -21,6 +21,9 @@
                 <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
             </v-tab-item>
         </v-tabs-items>
+        <div class="d-flex justify-center" v-if="$vuetify.breakpoint.name == 'xs' && matchData.nominations.length == 0">
+            Nominácia zatiaľ nebola uzatvorená
+        </div>
 
         <!-- PRE DESKTOPOVU VERZIU, TEAMS NAME -->
         <v-row v-if="$vuetify.breakpoint.name != 'xs'">
@@ -38,21 +41,26 @@
             </v-col>
         </v-row>
         <!-- PRE DESKTOPOVU VERZIU, TEAMS CONTENT, ZOSTAVY -->
-        <v-row v-if="$vuetify.breakpoint.name != 'xs' && matchData.nominations.length > 0">
-            <v-col v-for="(nom) in matchData.nominations" :key="nom.teamId">
-                <AthleteItem :events="matchData.protocol.events"
-                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
-                <v-subheader>Nahradnici</v-subheader>
-                <AthleteItem :events="matchData.protocol.events"
-                    :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
-                <v-subheader> Realizačný tím</v-subheader>
-                <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
-            </v-col>
-        </v-row>
-        <v-row class="mt-6" v-if="matchData.nominations.length == 0">
-            <v-col class="d-flex justify-center">
-                Zostavy zatiaľ nie sú dostupné
-            </v-col>
+        <v-row v-if="$vuetify.breakpoint.name != 'xs'">
+            <template v-if="matchData.nominations.length > 0">
+                <v-col v-for="(nom) in matchData.nominations" :key="nom.teamId">
+                    <AthleteItem :events="matchData.protocol.events"
+                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == false)" />
+                    <v-subheader>Nahradnici</v-subheader>
+                    <AthleteItem :events="matchData.protocol.events"
+                        :athletes="nom.athletes.filter(n => n.additionalData.substitute == true)" />
+                    <v-subheader> Realizačný tím</v-subheader>
+                    <AthleteItem crew :events="matchData.protocol.events" :athletes="nom.crew" />
+                </v-col>
+            </template>
+            <template v-if="matchData.nominations.length == 0">
+                <v-col class="d-flex justify-start">
+                    Nominácia zatiaľ nebola uzatvorená
+                </v-col>
+                <v-col class="d-flex justify-start">
+                    Nominácia zatiaľ nebola uzatvorená
+                </v-col>
+            </template>
         </v-row>
     </v-container>
 </template>

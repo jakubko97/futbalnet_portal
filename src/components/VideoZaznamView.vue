@@ -21,6 +21,9 @@
 
             </v-tab-item>
         </v-tabs-items>
+        <div v-if="data.videos.length == 0">
+            Žiaden videozáznam zatiaľ nebol pridaný.
+        </div>
     </v-container>
 </template>
     
