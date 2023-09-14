@@ -55,7 +55,11 @@
                   </v-row>
                   <v-list-item @click="routeTo(match)" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''" dense>
                     <v-list-item-content>
-                      <v-col class="d-md-flex justify-end flex-xs-1-0" style="justify-content: right: ;" lg="5" xs="3">
+                      <v-col class="d-md-flex justify-end flex-xs-1-0" style="text-align: center;" sm="5" cols="5">
+                        <v-list-item-avatar v-if="['xs', 'sm'].filter(i => i == $vuetify.breakpoint.name).length > 0">
+                          <img max-height="40" max-width="40" @error="imgError" alt="domaci"
+                            :src="match.teams[0].organization.logo_public_url" />
+                        </v-list-item-avatar>
                         <div :style="match.score[0] > match.score[1]
                           ? 'font-weight: bold; align-self: center'
                           : 'align-self: center'
@@ -64,26 +68,26 @@
                             {{ match.teams[0].name }}
                           </div>
                         </div>
-                        <v-list-item-avatar>
+                        <v-list-item-avatar v-if="['xs', 'sm'].filter(i => i == $vuetify.breakpoint.name).length == 0">
                           <img max-height="40" max-width="40" @error="imgError" alt="domaci"
                             :src="match.teams[0].organization.logo_public_url" />
                         </v-list-item-avatar>
                       </v-col>
-                      <v-col class="d-flex justify-center" lg="1" xs="2">
-                        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-                        <p :class="isMatchLive(match) ? 'red--text' : ''">
-                          {{ match.score[0] }} - {{ match.score[1] }}
-                        </p>
-                        <div style="font-weight: bold" v-if="match.penaltiesScore">
+                      <v-col sm="2" cols="2">
+                        <v-row class="d-flex justify-center" :class="isMatchLive(match) ? 'red--text' : ''">
+                            {{ match.score[0] }} - {{ match.score[1] }}
+                        </v-row>
+                        <v-row class="d-flex justify-center" style="font-weight: bold" v-if="match.penaltiesScore">
                           pk
                           {{
                             match.penaltiesScore[0] +
                             ":" +
                             match.penaltiesScore[1]
                           }}
-                        </div>
+                        </v-row>
+                        <!-- <v-icon dark right> mdi-checkbox-marked-circle </v-icon> -->
                       </v-col>
-                      <v-col class="d-md-flex justify-start flex-xs-3" lg="5" xs="3">
+                      <v-col class="d-md-flex justify-start flex-xs-3" style="text-align: center;" sm="5" cols="5">
                         <v-list-item-avatar>
                           <img max-height="40" max-width="40" @error="imgError" alt="hostia"
                             :src="match.teams[1].organization.logo_public_url" />
@@ -219,7 +223,7 @@ export default {
               Array.from(matchDetail.protocol.events, e => {
                 if (e.eventType === 'red_card') {
                   Array.from(matchDetail.teams, t => {
-                    if(t._id === e.team){
+                    if (t._id === e.team) {
                       e.teamName = t.name //assign actual name by teamId
                     }
                   })
