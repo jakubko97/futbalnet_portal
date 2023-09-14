@@ -30,10 +30,10 @@
             <!-- <v-subheader>Vysledky</v-subheader> -->
             <v-list-item-group color="primary">
               <template v-for="(match, idx) in matches">
-                <div :key="match._id">
+                <div :key="idx">
                   <v-row>
                     <v-col>
-                      {{ match.round.name }}. Kolo
+                      <!-- {{ match.round.name }}. Kolo -->
                       {{ $utils.formatDate(match.startDate) }}
                       <!-- <template v-for="vid in videos">
                         <div v-for="v in vid.videos" :key="v._id">
@@ -75,7 +75,7 @@
                       </v-col>
                       <v-col sm="2" cols="2">
                         <v-row class="d-flex justify-center" :class="isMatchLive(match) ? 'red--text' : ''">
-                            {{ match.score[0] }} - {{ match.score[1] }}
+                          {{ match.score[0] }} - {{ match.score[1] }}
                         </v-row>
                         <v-row class="d-flex justify-center" style="font-weight: bold" v-if="match.penaltiesScore">
                           pk
@@ -103,6 +103,12 @@
                   </v-list-item>
                 </div>
               </template>
+              <v-list-item v-if="result.nextOffset" @click="loadOtherMatches()" dense>
+                <v-list-item-content class="d-flex justify-center">
+                  <v-progress-circular v-if="result.loading" indeterminate color="primary"></v-progress-circular>
+                  <div class="d-flex justify-center" v-else>Načítať ďalšie zápasy</div>
+                </v-list-item-content>
+              </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-tab-item>
@@ -129,9 +135,10 @@ export default {
       selectedLeague: null,
       redCards: [],
       matches: [],
+      result: { nextOffset: null, offset: null, total: null, loading: false },
       tags: [
-        { name: 'Program', closed: false, limit: 12 },
-        { name: 'Vysledky', closed: true, limit: 32 },
+        { name: 'Program', closed: false, limit: 12, offset: 0 },
+        { name: 'Vysledky', closed: true, limit: 12, offset: 0 },
         { name: 'Tabuľka', closed: true, table: true, limit: null },
         { name: 'Č. Karty', closed: true, redCards: true, limit: null }
       ],
@@ -168,6 +175,40 @@ export default {
   },
   computed: {},
   methods: {
+    loadOtherMatches() {
+      this.result.loading = true
+      if (this.result.nextOffset != null) {
+        let league = null
+        if (this.$vuetify.breakpoint.name == "xs") {
+          league = this.selectedLeague;
+        } else {
+          league = this.leagues[this.tab];
+        }
+        this.videos = [];
+        const params = {
+          limit: this.selectedTag.limit,
+          offset: this.result.nextOffset,
+          withDate: true,
+          withTeams: true,
+          closed: this.selectedTag.closed,
+        };
+        this.$apiV1
+          .get(league.api, { params: params })
+          .then((response) => {
+            this.result.nextOffset = response.data.nextOffset
+            this.result.offset = response.data.offset
+            this.result.total = response.data.total
+            this.matches = this.matches.concat(response.data.matches)
+          })
+          .catch(() => {
+            // this.errors.push(e);
+          })
+          .finally(() => {
+            this.result.loading = false
+          });
+      }
+
+    },
     tagChange(index) {
       this.selectedTag = this.tags[index];
       if (this.$vuetify.breakpoint.name == "xs") {
@@ -255,6 +296,7 @@ export default {
     },
     //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
     fetchData(league) {
+      this.result.loading = true
       this.videos = [];
       this.matches = [];
       const params = {
@@ -267,6 +309,9 @@ export default {
       this.$apiV1
         .get(league.api, { params: params })
         .then((response) => {
+          this.result.nextOffset = response.data.nextOffset
+          this.result.offset = response.data.offset
+          this.result.total = response.data.total
           this.matches = response.data.matches;
         })
         .catch(() => {
@@ -274,7 +319,8 @@ export default {
         })
         .finally(() => {
           //this.fetchVideo()
-          if(this.selectedTag.redCards){
+          this.result.loading = false
+          if (this.selectedTag.redCards) {
             this.retrieveRedCards()
           }
         });
