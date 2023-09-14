@@ -274,7 +274,9 @@ export default {
         })
         .finally(() => {
           //this.fetchVideo()
-          this.retrieveRedCards()
+          if(this.selectedTag.redCards){
+            this.retrieveRedCards()
+          }
         });
     },
   },
