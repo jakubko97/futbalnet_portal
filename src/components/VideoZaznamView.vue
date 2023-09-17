@@ -6,14 +6,30 @@
         <v-tabs-items v-model="tab">
             <v-tab-item v-for="(video, idx) in data.videos" :key="idx">
                 <v-row class="d-flex justify-center">
-                    <video controls>
-                        <source :src="'https://video.sportnet.online/videospace/' + video.path" :type="video.type" />
-                        <p>
-                            Your browser doesn't support HTML video. Here is a
-                            <a :href="'https://video.sportnet.online/videospace/' + video.path">link to the video</a>
-                            instead.
-                        </p>
-                    </video>
+                    <v-col :cols="matchEvents ? 10 : 12">
+                        <video controls>
+                            <source :src="'https://video.sportnet.online/videospace/' + video.path" :type="video.type" />
+                            <p>
+                                Your browser doesn't support HTML video. Here is a
+                                <a :href="'https://video.sportnet.online/videospace/' + video.path">link to the video</a>
+                                instead.
+                            </p>
+                        </video>
+                    </v-col>
+                    <v-col v-if="matchEvents" cols="2">
+                        <v-row
+                            v-for="(event, idx2) in match.protocol.events.filter(a => a.eventType == 'goal' && (idx == 0 ? a.phase == '1HT' : a.phase == '2HT'))"
+                            :key="idx2">
+                            <v-col class="d-flex justify-end" cols="6">
+                                <strong> {{ event.eventTime }}
+                                </strong>
+                                <EventTypeImg :event="event" />
+                            </v-col>
+                            <v-col class="d-flex justify-start" cols="6">
+                                {{ event.player.name }}
+                            </v-col>
+                        </v-row>
+                    </v-col>
                 </v-row>
                 <v-row class="d-flex justify-center pa-2">
                     Veľkosť: {{ formatBytes(video.size) }} - Typ: {{ video.type }}
@@ -28,7 +44,7 @@
 </template>
     
 <script>
-
+import EventTypeImg from './EventTypeImg.vue';
 
 export default {
     name: 'VideoZaznamView',
@@ -39,11 +55,13 @@ export default {
         }
     },
     components: {
+        EventTypeImg
     },
 
     data: () => ({
         tab: 0,
-        data: null
+        data: null,
+        matchEvents: true
     }),
     created() {
         this.fetchVideo()
