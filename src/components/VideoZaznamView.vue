@@ -18,15 +18,20 @@
                     </v-col>
                     <v-col v-if="matchEvents" cols="2">
                         <v-row
-                            v-for="(event, idx2) in match.protocol.events.filter(a => a.eventType == 'goal' && (idx == 0 ? a.phase == '1HT' : a.phase == '2HT'))"
+                            v-for="(event, idx2) in match.protocol.events.filter(a => eventTypes.includes(a.eventType) && (idx == 0 ? a.phase == '1HT' : a.phase == '2HT'))"
                             :key="idx2">
-                            <v-col class="d-flex justify-end" cols="6">
+                            <v-col class="d-flex justify-end" cols="2">
                                 <strong> {{ event.eventTime }}
                                 </strong>
                                 <EventTypeImg :event="event" />
                             </v-col>
-                            <v-col class="d-flex justify-start" cols="6">
-                                {{ event.player.name }}
+                            <v-col class="d-flex justify-start" cols="10">
+                                <template v-if="event.player != null">
+                                    {{ event.player.name }}
+                                </template>
+                                <template v-if="event.player == null && event.crewMember.name">
+                                    {{ event.crewMember.name }}
+                                </template>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -61,7 +66,8 @@ export default {
     data: () => ({
         tab: 0,
         data: null,
-        matchEvents: true
+        matchEvents: true,
+        eventTypes: ['goal', 'red_card', 'second_yellow_card']
     }),
     created() {
         this.fetchVideo()
