@@ -16,7 +16,15 @@ const xapi2 = axios.create({
   }
 })
 
+const xapi3 = axios.create({
+  baseURL: cfg.api_url_person,
+  headers: {
+    Accept: 'application/json, text/plain, */*'
+  }
+})
+
 export default {xapi , xapi2}
 
 Vue.prototype.$apiV1 = xapi
 Vue.prototype.$apiV2 = xapi2
+Vue.prototype.$apiPerson = xapi3

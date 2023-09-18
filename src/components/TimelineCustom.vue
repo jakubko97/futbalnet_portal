@@ -1,17 +1,17 @@
 <template>
     <v-timeline-item color="transparent" small :left="teamsId[0] == ev.team" :right="teamsId[1] == ev.team">
         <template v-slot:icon>
-                <strong v-if="ev.eventTime" class=""> {{ parseInt(ev.eventTime) }}
-                </strong> '
-                <strong v-if="ev.eventTime == null" class=""> {{ eventIndex }}
-                </strong>
+            <strong v-if="ev.eventTime" class=""> {{ parseInt(ev.eventTime) }}
+            </strong> '
+            <strong v-if="ev.eventTime == null" class=""> {{ eventIndex }}
+            </strong>
         </template>
         <!-- design row patter for left side team -->
         <v-row v-if="teamsId[0] == ev.team" class="pt-1">
             <v-col class="d-flex justify-end pa-2" cols="12">
                 <div class="mr-4">
                     <v-row class="d-flex justify-end font-weight-bold">
-                        <div v-if="ev.player">
+                        <div @click="open(ev.player._issfId)" v-if="ev.player">
                             {{ ev.player.name }}
                         </div>
                         <div v-if="ev.player == null && ev.crewMember">
@@ -25,7 +25,7 @@
                         <div v-if="ev.reason == null && ev.type_sk">
                             {{ ev.type_sk }}
                         </div>
-                        <div v-if="ev.reason == null && ev.replacement != null">
+                        <div @click="open(ev.replacement._issfId)" v-if="ev.reason == null && ev.replacement != null">
                             Striedajúci: {{ ev.replacement.name }}
                         </div>
 
@@ -48,7 +48,7 @@
                 <EventTypeImg :event="ev" />
                 <div class="ml-4">
                     <v-row class="d-flex justify-start font-weight-bold">
-                        <div v-if="ev.player">
+                        <div @click="open(ev.player._issfId)" v-if="ev.player">
                             {{ ev.player.name }}
                         </div>
                         <div v-if="ev.player == null && ev.crewMember">
@@ -62,18 +62,38 @@
                         <div v-if="ev.reason == null && ev.type_sk">
                             {{ ev.type_sk }}
                         </div>
-                        <div v-if="ev.reason == null && ev.replacement != null">
+                        <div @click="open(ev.replacement._issfId)" v-if="ev.reason == null && ev.replacement != null">
                             Striedajúci: {{ ev.replacement.name }}
                         </div>
                     </v-row>
                 </div>
             </v-col>
         </v-row>
+        <CsDialog v-if="playerData" maxWidth="750" @close-dialog="close()" v-model="dialog" :title="''">
+            <v-container fluid>
+                <v-row class="d-flex justify-center">
+                    <v-avatar size="140">
+                        <v-img :src="playerData.photo ? playerData.photo.public_url : require('../assets/person.svg')" alt="player"/>
+                     </v-avatar>
+                </v-row>
+                <v-row class="d-flex justify-center headline">
+                    {{ playerData.titles.before + ' ' + playerData.name + ' ' + playerData.surname + ' ' + playerData.titles.after }}
+                </v-row>
+                <v-row class="d-flex justify-center">
+                    {{ playerData.age + ' rokov' }}  {{ ' | ' + playerData.birthyear + '' }} {{ ' | Reg. číslo ' + playerId + '' }}
+                </v-row>
+                <!-- <v-row class="d-flex justify-center">
+                   {{ playerData }}
+
+                </v-row> -->
+            </v-container>
+        </CsDialog>
     </v-timeline-item>
 </template>
     
 <script>
 import EventTypeImg from './EventTypeImg.vue';
+import CsDialog from './custom/CsDialog.vue';
 
 export default {
     name: 'TimelineCustom',
@@ -92,10 +112,36 @@ export default {
         }
     },
     components: {
-        EventTypeImg
+        EventTypeImg,
+        CsDialog
     },
-
+    methods: {
+        loadUser() { //ppo/futbalsfz.sk/users/
+            this.$apiPerson
+                .get("ppo/futbalsfz.sk/users/" + this.playerId)
+                .then((response) => {
+                    this.playerData = response.data
+                })
+                .catch(() => {
+                    // this.errors.push(e);
+                })
+                .finally(() => {
+                });
+        },
+        open(issfId) {
+            this.playerId = issfId
+            this.dialog = true
+            this.loadUser()
+        },
+        close() {
+            this.dialog = false
+            this.playerData = null
+        }
+    },
     data: () => ({
+        dialog: false,
+        playerId: null,
+        playerData: null
         //
     }),
 };

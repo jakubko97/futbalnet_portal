@@ -8,7 +8,7 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
             <v-tab-item>
-                <MatchOverview :events="matchData.protocol.events" :penalties-score="matchData.penaltiesScore"
+                <MatchOverview :events="matchData.protocol.events" :penalties-score="matchData.penaltiesScore" :nominations="matchData.nominations"
                     :teams-id="[matchData.teams[0]._id, matchData.teams[1]._id]" :score-phases="matchData.scoreByPhases" />
             </v-tab-item>
             <v-tab-item>

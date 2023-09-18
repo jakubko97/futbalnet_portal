@@ -71,6 +71,10 @@ import TimelineCustomMobile from './TimelineCustomMobile.vue';
 export default {
     name: 'MatchOverview',
     props: {
+        nominations: {
+            type: Array,
+            required: true
+        },
         scorePhases: {
             type: Array,
             required: true
@@ -93,13 +97,30 @@ export default {
         TimelineCustomMobile
     },
     created() {
-
+        this.addIssfIDToEvent()
     },
     data: () => ({
         checkbox1: false
-        //
     }),
     methods: {
+        addIssfIDToEvent() {
+            Array.from(this.events, e => {
+                if (e.player) {
+                    Array.from(this.nominations, n => {
+                        if (n.teamId === e.team) {
+                            Array.from(n.athletes, a => {
+                                if (e.player && (a.sportnetUser._id == e.player._id)) {
+                                    e.player._issfId = a.additionalData.__issfId
+                                }
+                                if (e.replacement && (a.sportnetUser._id == e.replacement._id)) {
+                                    e.replacement._issfId = a.additionalData.__issfId
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        },
         printScore(score) {
             return score[0] + ':' + score[1]
         },
