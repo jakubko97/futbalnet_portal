@@ -67,7 +67,7 @@ export default {
         tab: 0,
         data: null,
         matchEvents: true,
-        eventTypes: ['goal', 'red_card', 'second_yellow_card']
+        eventTypes: ['goal', 'failed_goal', 'red_card', 'second_yellow_card']
     }),
     created() {
         this.fetchVideo()
