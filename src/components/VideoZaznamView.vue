@@ -7,8 +7,8 @@
             <v-tab-item v-for="(video, idx) in data.videos" :key="idx">
                 <v-row class="d-flex justify-center">
                     <v-col :cols="matchEvents ? 10 : 12">
-                        <video controls>
-                            <source :src="'https://video.sportnet.online/videospace/' + video.path" :type="video.type" />
+                        <video ref="video" controls>
+                            <source :poster="video.thumbnail + '?x11217'" :src="'https://video.sportnet.online/videospace/' + video.path" :type="video.type" />
                             <p>
                                 Your browser doesn't support HTML video. Here is a
                                 <a :href="'https://video.sportnet.online/videospace/' + video.path">link to the video</a>
@@ -17,7 +17,7 @@
                         </video>
                     </v-col>
                     <v-col v-if="matchEvents" cols="2">
-                        <v-row
+                        <v-row @click="clickEvent(event.eventTime, idx)"
                             v-for="(event, idx2) in match.protocol.events.filter(a => eventTypes.includes(a.eventType) && (idx == 0 ? a.phase == '1HT' : a.phase == '2HT'))"
                             :key="idx2">
                             <v-col class="d-flex justify-end" cols="2">
@@ -73,6 +73,18 @@ export default {
         this.fetchVideo()
     },
     methods: {
+        clickEvent(eventTime , half) {
+            let seconds = 0
+            if(half == 1){
+                seconds = (parseFloat(eventTime) * 60) - (60*45)
+                this.$refs.video[1].currentTime = seconds
+                this.$refs.video[1].play()
+            }else if(half == 0){
+                seconds = (parseFloat(eventTime) * 60)
+                this.$refs.video[0].currentTime = seconds
+                this.$refs.video[0].play()
+            }
+        },
         formatBytes(bytes, decimals = 2) {
             if (!+bytes) return '0 Bytes'
 
