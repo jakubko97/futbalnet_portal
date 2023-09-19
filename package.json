@@ -13,8 +13,8 @@
     "axios": "^1.5.0",
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
-    "vuejs-thermometer": "^0.1.3",
     "vue-router": "^3.5.1",
+    "vuejs-thermometer": "^0.1.3",
     "vuetify": "^2.6.7"
   },
   "devDependencies": {

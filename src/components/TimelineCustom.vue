@@ -77,7 +77,7 @@
                      </v-avatar>
                 </v-row>
                 <v-row class="d-flex justify-center headline" style="align-items: center;">
-                    <v-img max-width="16" max-height="12" class="mr-2" :src="'https://api.sportnet.online/assets/countries/'+playerData.citizenship+'.svg'"></v-img>
+                    <!-- <v-img max-width="16" max-height="12" class="mr-2" :src="'https://api.sportnet.online/assets/countries/'+playerData.citizenship+'.svg'"></v-img> -->
                     {{ playerData.titles.before + ' ' + playerData.name + ' ' + playerData.surname + ' ' + playerData.titles.after }}
                 </v-row>
                 <v-row class="d-flex justify-center">
