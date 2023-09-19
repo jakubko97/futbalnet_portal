@@ -10,7 +10,7 @@
       <!-- PRE MOBILNU VERZIU, COMBOBOX LEAGUE LIST -->
       <v-row v-else>
         <v-col cols="12">
-          <v-combobox hide-details v-model="selectedLeague" :items="leagues" label="League" item-text="name" outlined
+          <v-combobox  hide-details v-model="selectedLeague" :items="leagues" label="League" item-text="name" outlined
             @change="selectChange" dense></v-combobox>
         </v-col>
       </v-row>
@@ -142,11 +142,27 @@ export default {
         { name: 'Tabuľka', closed: true, table: true, limit: null },
         { name: 'Č. Karty', closed: true, redCards: true, limit: null }
       ],
-      leagues: [{
-        name: 'VI. Vihorlatsko-dukelská', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches', promotion: [1], relegation: [1, 2]
+      leagues: [
+        {
+        name: 'VI. LIGA VIHORLATSKO-DUKELSKÁ', api: 'public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
+        name: 'VI. LIGA KOŠICKO-GEMERSKÁ', api: 'public/VsFZ/competitions/647c44857b634444d15c4380/parts/6486d4a276d0d348cd097869/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
+        name: 'VI. LIGA PODTATRANSKÁ', api: 'public/VsFZ/competitions/649320597f8d0dc9946751fc/parts/6493205876d0d348cd09994c/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
+        name: 'VI. LIGA ZEMPLÍNSKA', api: 'public/VsFZ/competitions/6493203c7f8d0dc99467318e/parts/6493203c76d0d348cd09994a/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
+        name: 'VI. LIGA ŠARIŠSKÁ', api: 'public/VsFZ/competitions/649320697f8d0dc99467627c/parts/6493206976d0d348cd09994d/matches', promotion: [1], relegation: [1, 2]
       },
       {
         name: 'V. Liga Sever', api: 'public/VsFZ/competitions/6493200c7f8d0dc99466fb7a/parts/6493200c76d0d348cd099948/matches', promotion: [1], relegation: [1, 2]
+      },
+      {
+        name: 'V. Liga Juh', api: 'public/VsFZ/competitions/649320227f8d0dc99467145c/parts/6493202276d0d348cd099949/matches', promotion: [1], relegation: [1, 2]
       },
       {
         name: 'IV. Liga', api: 'public/VsFZ/competitions/647ba0837b634444d1c5174e/parts/6486d42f76d0d348cd097868/matches', promotion: [1], relegation: [1, 2]
