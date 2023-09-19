@@ -282,6 +282,8 @@ export default {
                   Array.from(matchDetail.teams, t => {
                     if (t._id === e.team) {
                       e.teamName = t.name //assign actual name by teamId
+                      e.round = matchDetail.round.name
+                      e.__issfId = matchDetail.__issfId
                     }
                   })
                   this.redCards.push(e)

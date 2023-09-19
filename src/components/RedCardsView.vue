@@ -11,7 +11,8 @@
                 <strong>Dôvod</strong>
             </v-col>
         </v-row>
-        <v-row v-for="(card, idx) in data" :key="idx" :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''">
+        <v-row @click="routeTo(card)" v-for="(card, idx) in data" :key="idx" style="cursor: pointer;"
+            :style="idx % 2 == 0 ? 'background-color: aliceblue;' : ''">
             <v-col cols="3" sm="2">
                 <div v-if="card.player">
                     {{ card.player.name }}
@@ -21,7 +22,7 @@
                 </div>
             </v-col>
             <v-col cols="3" sm="2">
-                {{ card.teamName }}
+                {{ card.teamName }} {{ ' (' + card.round + '.kolo)' }}
             </v-col>
             <v-col cols="6" sm="8">
                 {{ card.reason }}
@@ -50,6 +51,9 @@ export default {
     components: {
     },
     methods: {
+        routeTo(match) {
+            this.$router.push("/match/" + match.__issfId);
+        },
     },
     mounted() {
 
