@@ -18,7 +18,7 @@
                     </v-col>
                     <v-col v-if="matchEvents" cols="2">
                         <v-row @click="clickEvent(event.eventTime, idx)"
-                            v-for="(event, idx2) in match.protocol.events.filter(a => eventTypes.includes(a.eventType) && (idx == 0 ? a.phase == '1HT' : a.phase == '2HT'))"
+                            v-for="(event, idx2) in match.protocol.events.filter(a => eventTypes.includes(a.eventType) && (video.category == '1.polcas' ? a.phase == '1HT' : a.phase == '2HT'))"
                             :key="idx2">
                             <v-col class="d-flex justify-end" cols="2">
                                 <strong> {{ event.eventTime }}
