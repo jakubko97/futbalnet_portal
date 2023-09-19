@@ -7,7 +7,8 @@
                 {{ ath.additionalData.nr }}
             </v-list-item-icon>
             <v-list-item-content>
-                <v-list-item-title>{{ ath.sportnetUser.name }}
+                <v-list-item-title>
+                    <span @click="open(ath)">{{ ath.sportnetUser.name }}</span>
                     <span v-if="ath.additionalData && ath.additionalData.captain"> (C)
                     </span>
                     <v-row style="float: right">
@@ -37,12 +38,36 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
+        <CsDialog v-if="playerData" maxWidth="750" @close-dialog="close()" v-model="dialog" :title="''">
+            <v-container fluid>
+                <v-row class="d-flex justify-center">
+                    <v-avatar size="140">
+                        <v-img :src="playerData.photo ? playerData.photo.public_url : require('../assets/person.svg')"
+                            alt="player" />
+                    </v-avatar>
+                </v-row>
+                <v-row class="d-flex justify-center headline" style="align-items: center;">
+                    <!-- <v-img max-width="16" max-height="12" class="mr-2" :src="'https://api.sportnet.online/assets/countries/'+playerData.citizenship+'.svg'"></v-img> -->
+                    {{ playerData.titles.before + ' ' + playerData.name + ' ' + playerData.surname + ' ' +
+                        playerData.titles.after }}
+                </v-row>
+                <v-row class="d-flex justify-center">
+                    {{ playerData.age + ' rokov' }} {{ ' | ' + playerData.birthyear + '' }} {{ ' | Reg. číslo ' + playerId +
+                        '' }}
+                </v-row>
+                <!-- <v-row class="d-flex justify-center">
+                   {{ playerData }}
+
+                </v-row> -->
+            </v-container>
+        </CsDialog>
         <div v-if="!crew && athletes.length > 0" class="mx-2 px-2">Priemerný vek: {{ getAverageAge() }}</div>
     </div>
 </template>
   
 <script>
 import EventTypeImg from './EventTypeImg.vue';
+import CsDialog from './custom/CsDialog.vue';
 
 export default {
     name: 'AthleteItem',
@@ -61,9 +86,33 @@ export default {
         }
     },
     components: {
-        EventTypeImg
+        EventTypeImg,
+        CsDialog
     },
     methods: {
+        open(athlete) {
+            if (athlete.additionalData) {
+                this.playerId = athlete.additionalData.__issfId
+                this.dialog = true
+                this.loadUser()
+            }
+        },
+        close() {
+            this.dialog = false
+            this.playerData = null
+        },
+        loadUser() { //ppo/futbalsfz.sk/users/
+            this.$apiPerson
+                .get("ppo/futbalsfz.sk/users/" + this.playerId)
+                .then((response) => {
+                    this.playerData = response.data
+                })
+                .catch(() => {
+                    // this.errors.push(e);
+                })
+                .finally(() => {
+                });
+        },
         getEventByUserId(id) {
             let arr = []
             Array.from(this.events, e => {
@@ -90,6 +139,9 @@ export default {
         }
     },
     data: () => ({
+        dialog: false,
+        playerData: null,
+        playerId: null
         //
     }),
 };
