@@ -8,6 +8,9 @@ module.exports = {
     'vuetify'
   ],
   configureWebpack: {
+    performance: {
+      maxAssetSize: 1000000
+    },
     module: {
       // loaders: [
       //   { test: /\.js$/, loader: 'babel', query: { compact: false } }
