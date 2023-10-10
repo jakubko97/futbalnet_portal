@@ -4,14 +4,7 @@ const version = JSON.parse(packageJson).version || 0
 const webpack = require('webpack')
 
 module.exports = {
-  transpileDependencies: [
-    'vuetify'
-  ],
-  build: {
-    babel: {
-      compact: true,
-    },
-  },
+  transpileDependencies: true,
   configureWebpack: {
     performance: {
       maxAssetSize: 1000000
@@ -20,13 +13,6 @@ module.exports = {
       // loaders: [
       //   { test: /\.js$/, loader: 'babel', query: { compact: false } }
       // ],
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          use: 'babel-loader'
-        }
-      ]
     },
     plugins: [
       new webpack.DefinePlugin({
