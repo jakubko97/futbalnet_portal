@@ -2,7 +2,7 @@
     <div class="d-flex align-center">
         <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
             v-if="event.eventType == 'failed_goal' && event.type == 'failed_goal_penalty'"
-            :src="require('../assets/missed_penalty.png')" />
+            :src="'https://upload.wikimedia.org/wikipedia/commons/1/1f/Missed_penalty_icon.svg'" />
         <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
             v-if="event.eventType == 'goal' && event.type == 'dropped'" :src="require('../assets/own_goal.png')" />
         <v-img v-bind="attrs" v-on="on" alt="" max-height="20" max-width="20"
