@@ -329,11 +329,12 @@ export default {
       this.result.loading = true;
       if (this.result.nextOffset != null) {
         let league = null;
-        if (this.$vuetify.breakpoint.name == "xs") {
-          league = this.selectedLeague;
-        } else {
-          league = this.leagues[this.tab];
-        }
+        // if (this.$vuetify.breakpoint.name == "xs") {
+        //   league = this.selectedLeague;
+        // } else {
+        //   league = this.leagues[this.tab];
+        // }
+        league = this.selectedLeague
         this.videos = [];
         const params = {
           limit: this.selectedTag.limit,
