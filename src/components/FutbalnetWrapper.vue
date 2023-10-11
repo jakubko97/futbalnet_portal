@@ -2,7 +2,7 @@
   <div>
     <v-container class="ma-0 pa-2" fluid>
       <!-- PRE DESKTOPOVU VERZIU, TABS LEAGUE NAMES -->
-      <!-- <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
+      <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
         <v-tab
           @click="fetchData(league)"
           v-for="league in leagues"
@@ -10,9 +10,9 @@
         >
           {{ league.name }}
         </v-tab>
-      </v-tabs> -->
+      </v-tabs>
       <!-- PRE MOBILNU VERZIU, COMBOBOX LEAGUE LIST -->
-      <v-row>
+      <v-row v-else>
         <v-col cols="12">
           <v-combobox
             hide-details
@@ -329,12 +329,11 @@ export default {
       this.result.loading = true;
       if (this.result.nextOffset != null) {
         let league = null;
-        // if (this.$vuetify.breakpoint.name == "xs") {
-        //   league = this.selectedLeague;
-        // } else {
-        //   league = this.leagues[this.tab];
-        // }
-        league = this.selectedLeague
+        if (this.$vuetify.breakpoint.name == "xs") {
+          league = this.selectedLeague;
+        } else {
+          league = this.leagues[this.tab];
+        }
         this.videos = [];
         const params = {
           limit: this.selectedTag.limit,
@@ -361,13 +360,11 @@ export default {
     },
     tagChange(index) {
       this.selectedTag = this.tags[index];
-      // if (this.$vuetify.breakpoint.name == "xs") {
-      //   this.fetchData(this.selectedLeague);
-      // } else {
-      //   this.fetchData(this.leagues[this.tab]);
-      // }
-      this.fetchData(this.selectedLeague);
-
+      if (this.$vuetify.breakpoint.name == "xs") {
+        this.fetchData(this.selectedLeague);
+      } else {
+        this.fetchData(this.leagues[this.tab]);
+      }
     },
     tabChange() {
       this.fetchData(this.leagues[this.tab]);
