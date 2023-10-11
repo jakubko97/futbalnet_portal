@@ -2,7 +2,7 @@
   <div>
     <v-container class="ma-0 pa-2" fluid>
       <!-- PRE DESKTOPOVU VERZIU, TABS LEAGUE NAMES -->
-      <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
+      <!-- <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
         <v-tab
           @click="fetchData(league)"
           v-for="league in leagues"
@@ -10,9 +10,9 @@
         >
           {{ league.name }}
         </v-tab>
-      </v-tabs>
+      </v-tabs> -->
       <!-- PRE MOBILNU VERZIU, COMBOBOX LEAGUE LIST -->
-      <v-row v-else>
+      <v-row>
         <v-col cols="12">
           <v-combobox
             hide-details
