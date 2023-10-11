@@ -15,13 +15,6 @@ module.exports = {
       // loaders: [
       //   { test: /\.js$/, loader: 'babel', query: { compact: false } }
       // ],
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          use: 'babel-loader'
-        }
-      ]
     },
     plugins: [
       new webpack.DefinePlugin({
