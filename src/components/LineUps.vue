@@ -94,7 +94,7 @@ export default {
     },
     methods: {
         imgError(event) {
-            event.target.src = require('../assets/default_club_logo.png')
+            event.target.src = "https://www.seekpng.com/png/full/28-289657_espn-soccer-team-logo-default.png"
         },
         //matches?playerAppSpace=fk-vechec.futbalnet.sk&competitionId=4497&dateTo=2023-08-28T17%3A08%3A00.000Z&withDate=true&closed=true&teamId=57400&offset=0&limit=8
     }

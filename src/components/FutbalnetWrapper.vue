@@ -393,7 +393,7 @@ export default {
       this.$router.push("/match/" + match.__issfId);
     },
     imgError(event) {
-      event.target.src = require("../assets/default_club_logo.png");
+      event.target.src = "https://www.seekpng.com/png/full/28-289657_espn-soccer-team-logo-default.png";
     },
     retrieveRedCards() {
       this.redCards = [];

@@ -7,11 +7,6 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
-  build: {
-    babel: {
-      compact: true,
-    },
-  },
   configureWebpack: {
     performance: {
       maxAssetSize: 1000000
