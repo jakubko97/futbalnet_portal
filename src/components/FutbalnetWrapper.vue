@@ -361,11 +361,13 @@ export default {
     },
     tagChange(index) {
       this.selectedTag = this.tags[index];
-      if (this.$vuetify.breakpoint.name == "xs") {
-        this.fetchData(this.selectedLeague);
-      } else {
-        this.fetchData(this.leagues[this.tab]);
-      }
+      // if (this.$vuetify.breakpoint.name == "xs") {
+      //   this.fetchData(this.selectedLeague);
+      // } else {
+      //   this.fetchData(this.leagues[this.tab]);
+      // }
+      this.fetchData(this.selectedLeague);
+
     },
     tabChange() {
       this.fetchData(this.leagues[this.tab]);
