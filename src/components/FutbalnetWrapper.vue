@@ -4,7 +4,7 @@
       <!-- PRE DESKTOPOVU VERZIU, TABS LEAGUE NAMES -->
       <v-tabs hide-slider v-if="$vuetify.breakpoint.name != 'xs'" v-model="tab">
         <v-tab
-          @click="fetchData(league)"
+          @click="leagueChange(league)"
           v-for="league in leagues"
           :key="league.name"
         >
@@ -42,7 +42,7 @@
         </v-col>
       </v-row>
       <v-tabs-items
-        v-if="!selectedTag.table && !selectedTag.redCards"
+        v-if="!selectedTag.table && !selectedTag.redCards && !selectedTag.stats"
         @change="tabChange()"
         v-model="tab"
       >
@@ -209,16 +209,23 @@
         :league="selectedLeague"
         :data="redCards"
       />
+       <StatsView
+        v-if="selectedTag.stats"
+        :league="selectedLeague"
+      />
     </v-container>
   </div>
 </template>
 <script>
 import TableView from "./TableView.vue";
 import RedCardsView from "./RedCardsView.vue";
+import StatsView from "./StatsView.vue";
+
+// import { useRouter } from 'vue-router'
 
 export default {
   name: "FutbalnetWrapper",
-  components: { TableView, RedCardsView },
+  components: { TableView, RedCardsView, StatsView },
   data() {
     return {
       tab: 0,
@@ -234,84 +241,98 @@ export default {
         { name: "Program", closed: false, limit: 12, offset: 0 },
         { name: "Vysledky", closed: true, limit: 12, offset: 0 },
         { name: "Tabuľka", closed: true, table: true, limit: null },
+        { name: "Stats", closed: true, table: false, limit: null, stats: true },
         { name: "Č. Karty", closed: true, redCards: true, limit: null },
       ],
       leagues: [
         {
           name: "VI. LIGA VIHORLATSKO-DUKELSKÁ",
-          api: "public/VsFZ/competitions/6493204b7f8d0dc994674280/parts/6493204b76d0d348cd09994b/matches",
+          api: "public/VsFZ/competitions/4497/parts/6493204b76d0d348cd09994b",
+          stats: "public/competitions/4497/parts/6493204b76d0d348cd09994b",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "VI. LIGA KOŠICKO-GEMERSKÁ",
-          api: "public/VsFZ/competitions/647c44857b634444d15c4380/parts/6486d4a276d0d348cd097869/matches",
+          api: "public/VsFZ/competitions/4495/parts/6486d4a276d0d348cd097869",
+          stats: "public/competitions/4495/parts/6486d4a276d0d348cd097869",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "VI. LIGA PODTATRANSKÁ",
-          api: "public/VsFZ/competitions/649320597f8d0dc9946751fc/parts/6493205876d0d348cd09994c/matches",
+          api: "public/VsFZ/competitions/4499/parts/6493205876d0d348cd09994c",
+          stats: "public/competitions/4499/parts/6493205876d0d348cd09994c",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "VI. LIGA ZEMPLÍNSKA",
-          api: "public/VsFZ/competitions/6493203c7f8d0dc99467318e/parts/6493203c76d0d348cd09994a/matches",
+          api: "public/VsFZ/competitions/4496/parts/6493203c76d0d348cd09994a",
+          stats: "public/competitions/4496/parts/6493203c76d0d348cd09994a",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "VI. LIGA ŠARIŠSKÁ",
-          api: "public/VsFZ/competitions/649320697f8d0dc99467627c/parts/6493206976d0d348cd09994d/matches",
+          api: "public/VsFZ/competitions/4500/parts/6493206976d0d348cd09994d",
+          stats: "public/competitions/4500/parts/6493206976d0d348cd09994d",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "V. Liga Sever",
-          api: "public/VsFZ/competitions/6493200c7f8d0dc99466fb7a/parts/6493200c76d0d348cd099948/matches",
+          api: "public/VsFZ/competitions/4491/parts/6493200c76d0d348cd099948",
+          stats: "public/competitions/4491/parts/6493200c76d0d348cd099948",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "V. Liga Juh",
-          api: "public/VsFZ/competitions/649320227f8d0dc99467145c/parts/6493202276d0d348cd099949/matches",
+          api: "public/VsFZ/competitions/4494/parts/6493202276d0d348cd099949",
+          stats: "public/competitions/4494/parts/6493202276d0d348cd099949",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "IV. Liga",
-          api: "public/VsFZ/competitions/647ba0837b634444d1c5174e/parts/6486d42f76d0d348cd097868/matches",
+          api: "public/VsFZ/competitions/4490/parts/6486d42f76d0d348cd097868",
+          stats: "public/competitions/4490/parts/6486d42f76d0d348cd097868",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "III. Východ",
-          api: "public/futbalsfz.sk/competitions/6477ac257b634444d118634a/parts/647a3f3b76d0d348cd095fa9/matches",
+          api: "public/futbalsfz.sk/competitions/4408/parts/647a3f3b76d0d348cd095fa9",
+          stats: "public/competitions/4408/parts/647a3f3b76d0d348cd095fa9",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "II.",
-          api: "public/futbalsfz.sk/competitions/647904787b634444d148590a/parts/6479047876d0d348cd095d6b/matches",
+          api: "public/futbalsfz.sk/competitions/4346/parts/6479047876d0d348cd095d6b",
+          stats: "public/competitions/4346/parts/6479047876d0d348cd095d6b",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "Niké Liga",
-          api: "public/ulk.futbalnet.sk/competitions/64997173eebe726b04698003/parts/649abbbb76d0d348cd09aa12/matches",
+          api: "public/ulk.futbalnet.sk/competitions/4581/parts/649abbbb76d0d348cd09aa12",
+          stats: "public/competitions/4581/parts/649abbbb76d0d348cd09aa12",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "VII. VT",
-          api: "public/obfz-vranov-nad-toplou.futbalnet.sk/competitions/648189467b634444d1a6df81/parts/6490289976d0d348cd0990ec/matches",
+          api: "public/obfz-vranov-nad-toplou.futbalnet.sk/competitions/4569/parts/6490289976d0d348cd0990ec",
+          stats: "public/competitions/4569/parts/6490289976d0d348cd0990ec",
           promotion: [1],
           relegation: [1, 2],
         },
         {
           name: "Slovnaft Cup",
-          api: "public/futbalsfz.sk/competitions/64784fa27b634444d1943186/parts/64784fa276d0d348cd095bda/matches",
+          api: "public/futbalsfz.sk/competitions/4350/parts/64784fa276d0d348cd095bda",
+          stats: "public/competitions/4350/parts/64784fa276d0d348cd095bda",
           promotion: [1],
           relegation: [1, 2],
         },
@@ -343,7 +364,7 @@ export default {
           closed: this.selectedTag.closed,
         };
         this.$apiV1
-          .get(league.api, { params: params })
+          .get(league.api + '/matches', { params: params })
           .then((response) => {
             this.result.nextOffset = response.data.nextOffset;
             this.result.offset = response.data.offset;
@@ -365,6 +386,10 @@ export default {
       } else {
         this.fetchData(this.leagues[this.tab]);
       }
+    },
+    leagueChange(league){
+      this.fetchData(league);
+      this.selectedLeague = league
     },
     tabChange() {
       this.fetchData(this.leagues[this.tab]);
@@ -390,6 +415,9 @@ export default {
       return !match.closed && match.scoreByPhases.length > 0;
     },
     routeTo(match) {
+      // const router = useRouter();
+      // const routeData = router.resolve({path: "/match/" + match.__issfId});
+      // window.open(routeData.href, '_blank');
       this.$router.push("/match/" + match.__issfId);
     },
     imgError(event) {
@@ -457,7 +485,7 @@ export default {
         closed: this.selectedTag.closed,
       };
       this.$apiV1
-        .get(league.api, { params: params })
+        .get(league.api + '/matches', { params: params })
         .then((response) => {
           this.result.nextOffset = response.data.nextOffset;
           this.result.offset = response.data.offset;
