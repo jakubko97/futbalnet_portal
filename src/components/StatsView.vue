@@ -1,7 +1,20 @@
 <template>
   <v-expansion-panels>
     <v-expansion-panel v-for="(item, i) in teams" :key="i">
-      <v-expansion-panel-header> {{ item.name }} </v-expansion-panel-header>
+      <v-expansion-panel-header>
+        <div>
+           <v-list-item-avatar>
+        <img
+          max-height="20"
+          max-width="20"
+          alt="team"
+          :src="item.organization.logo_public_url"
+        />
+        </v-list-item-avatar>
+        {{ item.name }}
+        </div>
+       
+      </v-expansion-panel-header>
       <v-expansion-panel-content>
         <!-- {{ item.squad }} -->
         <v-data-table
@@ -12,11 +25,11 @@
           class="elevation-0"
           :loading-text="'Načítavám štatistiky hráčov...'"
         >
-           <template #[`item.minutesPerGoal`]="{ item }">
+          <template #[`item.minutesPerGoal`]="{ item }">
             <div v-if="item.stats.goals > 0">
               {{ (item.stats.minutes / item.stats.goals).toFixed(0) }}
             </div>
-        </template>
+          </template>
         </v-data-table>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -34,7 +47,7 @@ export default {
   },
   watch: {
     league() {
-      console.log(this.league)
+      console.log(this.league);
       this.fetchData();
     },
   },
@@ -50,7 +63,6 @@ export default {
             .get(this.league.stats + "/players")
             .then((response) => {
               this.players = response.data.players;
-
             })
             .catch(() => {
               // this.errors.push(e);
