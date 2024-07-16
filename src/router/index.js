@@ -11,12 +11,20 @@ const routes = [
   //   component: HomeView
   // },
   {
-    path: '/',
+    path: '/futbalnet',
     name: 'futbalnet',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "futbalnetView" */ '../views/FutbalnetView.vue')
+  },
+  {
+    path: '/termometer',
+    name: 'termometer',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "WeatherView" */ '../views/WeatherView.vue')
   },
   {
     path: '/match/:id',

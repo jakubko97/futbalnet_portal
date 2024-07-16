@@ -1,33 +1,34 @@
 <template>
   <div>
-    <h2>{{ location }}</h2>
-    <img alt="Current weather icon" :src="icon ? icon : ''" />
-    <p>Čas merania {{ formattedDate }}</p>
-    {{ temp + '℃ ' + humidity + '%'}}
-    <v-row>
-      <v-col>
-        <vue-thermometer
-          style="justify-content: end"
-          :value="temp"
-          :min="-20"
-          :max="25"
-        />
-      </v-col>
-      <v-col>
-        <vue-thermometer
-          :value="humidity"
-          :min="0"
-          scale="%"
-          :max="100"
-          :options="{
-            thermo: {
-              color: '#0000FF',
-            },
-          }"
-        />
-      </v-col>
-    </v-row>
-
+    <div class="text-center">
+      <h2>{{ location }}</h2>
+      <img alt="Current weather icon" :src="icon ? icon : ''" />
+      <p>Čas merania {{ formattedDate }}</p>
+      {{ temp + "℃ " + humidity + "%" }}
+      <v-row>
+        <v-col>
+          <vue-thermometer
+            style="justify-content: end"
+            :value="temp"
+            :min="-20"
+            :max="25"
+          />
+        </v-col>
+        <v-col>
+          <vue-thermometer
+            :value="humidity"
+            :min="0"
+            scale="%"
+            :max="100"
+            :options="{
+              thermo: {
+                color: '#0000FF',
+              },
+            }"
+          />
+        </v-col>
+      </v-row>
+    </div>
     <div class="text-center">
       <v-btn
         rounded
@@ -98,7 +99,7 @@ export default {
       //     const searchParams = new URLSearchParams(paramsObj);
 
       return await fetch(
-        "http://192.168.1.122:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
+        "http://192.168.0.11:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
         {
           method: "GET",
           headers: {

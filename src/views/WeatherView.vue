@@ -1,22 +1,22 @@
 <template>
   <div>
     <!-- <AdsHeader/> -->
-    <FutbalnetWrapper />
+    <WeatherNow />
     <!-- <AdsFooter/> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import FutbalnetWrapper from "../components/FutbalnetWrapper.vue";
+import WeatherNow from "../components/WeatherNow.vue";
 
 // import AdsHeader from '../components/AdvertisementWrapper.vue'
 // import AdsFooter from '../components/AdsFooter.vue'
 
 export default {
-  name: "HomeView",
+  name: "WeatherView",
   components: {
-    FutbalnetWrapper,
+    WeatherNow,
     // AdsHeader,
     // AdsFooter
   },
