@@ -35,7 +35,9 @@
         <v-card-title>Výsledky</v-card-title>
         <v-card-text>
           <div>
-            Správne: {{ score }} / {{ questions.length }}
+            <div>
+            Správne: {{ score }} / {{ maxScore }}
+            </div>
           </div>
           <div v-for="(q, i) in questions" :key="i" class="my-4">
             <strong>{{ i + 1 }}. {{ q.question }}</strong>
@@ -77,19 +79,20 @@ export default {
     };
   },
   computed: {
+    maxScore() {
+        return this.questions.reduce((total, q) => {
+            return total + q.answers.filter(a => a.correct).length;
+        }, 0);
+    },
     currentQuestion() {
       return this.questions[this.currentIndex];
     },
-    score() {
-      return this.questions.reduce((total, q, i) => {
-        const correctIndexes = q.answers.map((a, idx) => a.correct ? idx : -1).filter(idx => idx !== -1);
-        const userAnswer = this.userAnswers[i] || [];
-        const isCorrect =
-          correctIndexes.length === userAnswer.length &&
-          correctIndexes.every(idx => userAnswer.includes(idx));
-        return isCorrect ? total + 1 : total;
-      }, 0);
-    }
+   score() {
+        return this.questions.reduce((total, q, i) => {
+            const userAns = this.userAnswers[i] || [];
+            return total + userAns.reduce((sum, idx) => q.answers[idx]?.correct ? sum + 1 : sum, 0);
+        }, 0);
+},
   },
   methods: {
     startTest() {
