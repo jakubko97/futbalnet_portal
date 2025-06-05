@@ -25,11 +25,6 @@
           class="elevation-0"
           :loading-text="'Načítavám štatistiky hráčov...'"
         >
-          <template #[`item.minutesPerGoal`]="{ item }">
-            <div v-if="item.stats.goals > 0">
-              {{ (item.stats.minutes / item.stats.goals).toFixed(0) }}
-            </div>
-          </template>
         </v-data-table>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -63,6 +58,11 @@ export default {
             .get(this.league.stats + "/players")
             .then((response) => {
               this.players = response.data.players;
+              Array.from(this.players, p => {
+                if(p.stats.goals != null && p.stats.goals > 0){
+                  p.stats.minutesPerGoal = (p.stats.minutes / p.stats.goals).toFixed(0)
+                }
+              })
             })
             .catch(() => {
               // this.errors.push(e);
@@ -85,7 +85,7 @@ export default {
     headers: [
       { text: "Meno hráča", value: "name" },
       { text: "Góly", value: "stats.goals" },
-      { text: "Minúty na gól", value: "minutesPerGoal" },
+      { text: "Minúty na gól", value: "stats.minutesPerGoal" },
       { text: "Zápasy", value: "stats.match_appearances" },
       { text: "Zápasy v základe", value: "stats.match_starts" },
       { text: "Minúty", value: "stats.minutes" },
