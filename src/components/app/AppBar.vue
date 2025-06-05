@@ -42,7 +42,7 @@ export default {
           path: "/termometer",
         },
         { title: "Futbalnet", icon: "mdi-soccer", path: "/futbalnet" },
-        { title: "Testy", icon: "mdi-test", path: "/test" },
+        { title: "Testy", icon: "mdi-clipboard-text-clock", path: "/test" },
         // { title: 'Profile', icon: 'mdi-cloud', path: '/profile' },
       ],
       drawer: false,
