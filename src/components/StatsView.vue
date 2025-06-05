@@ -86,6 +86,8 @@ export default {
       { text: "Meno hráča", value: "name" },
       { text: "Góly", value: "stats.goals" },
       { text: "Minúty na gól", value: "minutesPerGoal" },
+      { text: "Zápasy", value: "stats.match_appearances" },
+      { text: "Štarty", value: "stats.match_starts" },
       { text: "Minúty", value: "stats.minutes" },
       { text: "Žlté karty", value: "stats.yellow_cards" },
       { text: "Červené karty", value: "stats.red_cards" },
