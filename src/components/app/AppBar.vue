@@ -2,7 +2,7 @@
   <div>
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>JJ Devel</v-toolbar-title>
+      <v-toolbar-title>Jami page</v-toolbar-title>
     </v-app-bar>
     <v-navigation-drawer app v-model="drawer" temporary>
       <v-list nav dense>
