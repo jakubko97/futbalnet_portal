@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panels>
-    <v-expansion-panel v-for="(item, i) in teams" :key="i">
+    <v-expansion-panel v-for="(team, i) in teams" :key="i">
       <v-expansion-panel-header>
         <div>
            <v-list-item-avatar>
@@ -8,19 +8,19 @@
           max-height="20"
           max-width="20"
           alt="team"
-          :src="item.organization.logo_public_url"
+          :src="team.organization.logo_public_url"
         />
         </v-list-item-avatar>
-        {{ item.name }}
+        {{ team.name }}
         </div>
        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <!-- {{ item.squad }} -->
+        <v-btn class="primary" @click="exportToCSV(team)">Export</v-btn>
         <v-data-table
           mobile-breakpoint="0"
           :headers="headers"
-          :items="players.filter((player) => player.teamId == item._id)"
+          :items="players.filter((player) => player.teamId == team._id)"
           :items-per-page="15"
           class="elevation-0"
           :loading-text="'Načítavám štatistiky hráčov...'"
@@ -48,6 +48,48 @@ export default {
   },
   components: {},
   methods: {
+    exportToCSV(team) {
+    const items = this.players.filter((player) => player.teamId == team._id)
+    const csvContent = [];
+
+    // Vyberieme hlavičky, aj pre vnorené polia
+    const exportHeaders = [
+    { text: "Meno hráča", value: "name" },
+    { text: "Góly", value: "stats.goals" },
+    { text: "Minúty na gól", value: "stats.minutesPerGoal" },
+    { text: "Zápasy", value: "stats.match_appearances" },
+    { text: "Zápasy v základe", value: "stats.match_starts" },
+    { text: "Minúty", value: "stats.minutes" },
+    { text: "Žlté karty", value: "stats.yellow_cards" },
+    { text: "Červené karty", value: "stats.red_cards" },
+    ];
+
+  // Prvý riadok CSV: hlavičky
+  csvContent.push(exportHeaders.map(h => `"${h.text}"`).join(','));
+
+  // Dáta
+  items.forEach(item => {
+    const row = exportHeaders.map(h => {
+      const keys = h.value.split('.');
+      let val = item;
+
+      for (let k of keys) {
+        val = val?.[k];
+        if (val === undefined || val === null) val = '';
+      }
+
+      return `"${val}"`;
+    });
+    csvContent.push(row.join(','));
+  });
+
+  // Stiahni súbor
+  const blob = new Blob([csvContent.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', team.name + '_stats.csv');
+  link.click();
+    },
     fetchData() {
       this.$apiV1
         .get(this.league.stats + "/teams")
