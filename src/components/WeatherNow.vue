@@ -99,7 +99,7 @@ export default {
       //     const searchParams = new URLSearchParams(paramsObj);
 
       return await fetch(
-        "http://192.168.0.122:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
+        "http://192.168.1.122:8086/query?db=home&epoch=ms&q=SELECT+%22temperature%22%2C%20%22humidity%22%2C%20%22location%22%2C%20%22icon%22+FROM+%22temperature%22+ORDER+BY+time+DESC+LIMIT%201%3B",
         {
           method: "GET",
           headers: {
